@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCF Institute - Build Your Future</title>
+<style>
+/* Scroll Progress Bar */
+#scrollBar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#00ffff,#0080ff);width:0%;z-index:9999;transition:width 0.1s;}
+/* Announcement Bar */
+.announce-bar{background:linear-gradient(90deg,#00ffff22,#0080ff22);border-bottom:1px solid rgba(0,255,255,0.2);padding:8px 0;overflow:hidden;position:fixed;top:0;width:100%;z-index:1001;}
+.announce-bar marquee{color:#00ffff;font-size:13px;font-weight:600;letter-spacing:0.5px;}
+/* WhatsApp Button */
+#waBtn{position:fixed;bottom:90px;right:25px;width:55px;height:55px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;cursor:pointer;z-index:999;box-shadow:0 4px 20px rgba(37,211,102,0.5);animation:pulse 2s infinite;text-decoration:none;}
+@keyframes pulse{0%,100%{box-shadow:0 4px 20px rgba(37,211,102,0.5);}50%{box-shadow:0 4px 35px rgba(37,211,102,0.9);}}
+/* Notification Bell */
+#notifBtn{position:fixed;bottom:160px;right:28px;width:48px;height:48px;background:rgba(0,255,255,0.15);border:1px solid rgba(0,255,255,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;z-index:999;}
+#notifDot{position:absolute;top:-3px;right:-3px;width:14px;height:14px;background:#ff4444;border-radius:50%;font-size:9px;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;}
+#notifPanel{position:fixed;bottom:220px;right:25px;width:300px;background:#0f1628;border:1px solid rgba(0,255,255,0.2);border-radius:14px;padding:18px;z-index:998;display:none;box-shadow:0 10px 40px rgba(0,0,0,0.5);}
+#notifPanel h4{color:#00ffff;margin-bottom:12px;font-size:14px;}
+.notif-item{padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px;color:#ccc;}
+.notif-item span{color:#00ffff;font-size:11px;display:block;margin-top:3px;}
+/* Countdown Timer */
+.countdown-banner{background:linear-gradient(135deg,rgba(0,255,255,0.08),rgba(0,128,255,0.08));border:1px solid rgba(0,255,255,0.2);border-radius:16px;padding:25px 35px;text-align:center;margin:0 50px 40px;}
+.countdown-banner h3{color:#00ffff;font-size:18px;margin-bottom:15px;}  
+.timer-boxes{display:flex;justify-content:center;gap:15px;}
+.timer-box{background:rgba(0,255,255,0.1);border:1px solid rgba(0,255,255,0.3);border-radius:10px;padding:12px 20px;min-width:70px;}
+.timer-box .num{font-size:32px;font-weight:800;color:#00ffff;display:block;}
+.timer-box .lbl{font-size:11px;color:#aaa;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif;scroll-behavior:smooth;}
+body{background:#0b0f1a;color:white;overflow-x:hidden;}
+header{position:fixed;top:0;width:100%;padding:15px 50px;display:flex;justify-content:space-between;align-items:center;background:rgba(11,15,26,0.6);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);z-index:1000;border-bottom:1px solid rgba(0,255,255,0.15);box-shadow:0 4px 30px rgba(0,0,0,0.3);transition:background 0.3s;}
+header.scrolled{background:rgba(11,15,26,0.92);}
+.logo{display:flex;align-items:center;gap:12px;font-size:24px;font-weight:bold;color:#00ffff;text-decoration:none;}
+.logo img{width:42px;height:42px;border-radius:50%;}
+nav{display:flex;gap:5px;align-items:center;}
+nav a{color:#ccc;text-decoration:none;padding:8px 14px;border-radius:8px;transition:0.3s;font-size:14px;}
+nav a:hover{color:#00ffff;background:rgba(0,255,255,0.1);}
+.nav-btn{background:#00ffff!important;color:#0b0f1a!important;font-weight:bold!important;border-radius:8px;}
+.nav-btn:hover{background:white!important;}
+.hero{min-height:100vh;display:flex;justify-content:center;align-items:center;flex-direction:column;text-align:center;padding:150px 20px 60px;position:relative;overflow:hidden;background:#0b0f1a;}
+#heroCanvas{position:absolute;inset:0;z-index:0;}
+.hero>*{position:relative;z-index:1;}
+.hero-badge{background:rgba(0,255,255,0.1);border:1px solid rgba(0,255,255,0.3);color:#00ffff;padding:8px 20px;border-radius:20px;font-size:13px;margin-bottom:25px;display:inline-block;letter-spacing:1px;}
+.hero h1{font-size:62px;font-weight:800;line-height:1.2;margin-bottom:20px;background:linear-gradient(135deg,#ffffff,#00ffff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero p{font-size:19px;color:#aaa;margin-bottom:35px;max-width:650px;line-height:1.7;}
+.hero-btns{display:flex;gap:15px;justify-content:center;flex-wrap:wrap;}
+.btn{padding:13px 30px;border:none;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer;transition:0.3s;text-decoration:none;display:inline-block;}
+.btn-primary{background:#00ffff;color:#0b0f1a;}
+.btn-primary:hover{background:white;transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,255,255,0.3);}
+.btn-outline{background:transparent;color:white;border:2px solid rgba(255,255,255,0.3);}
+.btn-outline:hover{border-color:#00ffff;color:#00ffff;transform:translateY(-3px);}
+.stats-bar{background:rgba(0,255,255,0.04);border-top:1px solid rgba(0,255,255,0.1);border-bottom:1px solid rgba(0,255,255,0.1);padding:35px 50px;display:grid;grid-template-columns:repeat(4,1fr);text-align:center;gap:20px;}
+.stat-item h3{font-size:38px;font-weight:800;color:#00ffff;}
+.stat-item p{color:#aaa;font-size:13px;margin-top:5px;}
+section{padding:90px 50px;}
+.section-tag{color:#00ffff;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;}
+.section-title{font-size:40px;font-weight:800;margin-bottom:15px;}
+.section-sub{color:#aaa;font-size:16px;max-width:600px;margin:0 auto 50px;line-height:1.7;}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+.about-img{border-radius:20px;overflow:hidden;position:relative;}
+.about-img img{width:100%;height:480px;object-fit:cover;}
+.about-img::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,255,255,0.08),transparent);border-radius:20px;}
+.about-content h2{font-size:36px;font-weight:800;margin-bottom:20px;line-height:1.3;}
+.about-content p{color:#aaa;font-size:15px;line-height:1.8;margin-bottom:20px;}
+.feature-list{list-style:none;}
+.feature-list li{display:flex;align-items:center;gap:12px;padding:10px 0;color:#ccc;font-size:14px;border-bottom:1px solid rgba(255,255,255,0.05);}
+.feature-list li span{color:#00ffff;font-size:16px;}
+.courses-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:25px;}
+.course-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:18px;overflow:hidden;transition:0.4s;cursor:pointer;}
+.course-card:hover{transform:translateY(-8px);border-color:rgba(0,255,255,0.3);box-shadow:0 20px 40px rgba(0,255,255,0.08);}
+.course-card img{width:100%;height:190px;object-fit:cover;}
+.course-body{padding:22px;}
+.course-tag{background:rgba(0,255,255,0.1);color:#00ffff;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;display:inline-block;margin-bottom:12px;}
+.course-body h3{font-size:20px;font-weight:700;margin-bottom:8px;}
+.course-body p{color:#aaa;font-size:13px;line-height:1.6;margin-bottom:18px;}
+.course-footer{display:flex;justify-content:space-between;align-items:center;padding-top:15px;border-top:1px solid rgba(255,255,255,0.06);}
+.course-price{font-size:22px;font-weight:800;color:#00ffff;}
+.course-btn{padding:8px 18px;background:#00ffff;color:#0b0f1a;border:none;border-radius:8px;font-weight:bold;cursor:pointer;font-size:13px;transition:0.3s;}
+.course-btn:hover{background:white;}
+.placement-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:25px;}
+.placement-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:28px;text-align:center;transition:0.4s;cursor:pointer;}
+.placement-card:hover{transform:translateY(-8px);border-color:rgba(0,255,255,0.3);box-shadow:0 20px 40px rgba(0,255,255,0.08);}
+.placement-card img{width:110px;height:55px;object-fit:contain;margin-bottom:18px;filter:brightness(0) invert(1);opacity:0.8;}
+.placement-card h3{font-size:20px;font-weight:700;margin-bottom:6px;}
+.placement-card p{color:#aaa;font-size:13px;margin-bottom:14px;}
+.placement-count{background:rgba(0,255,255,0.1);color:#00ffff;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;}
+/* Testimonial Slider */
+.testimonial-slider{position:relative;overflow:hidden;}
+.testimonial-track{display:flex;transition:transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);}
+.testimonial-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:28px;transition:0.4s;min-width:calc(33.33% - 17px);margin-right:25px;flex-shrink:0;}
+.testimonial-card:hover{border-color:rgba(0,255,255,0.2);}
+.slider-dots{display:flex;justify-content:center;gap:8px;margin-top:25px;}
+.slider-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.2);cursor:pointer;transition:0.3s;border:none;}
+.slider-dot.active{background:#00ffff;width:24px;border-radius:4px;}
+/* Glassmorphism cards */
+.course-card{backdrop-filter:blur(10px);}
+.stat-item{transition:transform 0.3s;}
+.stat-item:hover{transform:translateY(-4px);}
+.stars{color:#00ffff;font-size:13px;margin-bottom:14px;}
+.testimonial-card p{color:#ccc;font-size:14px;line-height:1.8;margin-bottom:20px;font-style:italic;}
+.testimonial-author{display:flex;align-items:center;gap:12px;}
+.testimonial-author img{width:42px;height:42px;border-radius:50%;object-fit:cover;}
+.testimonial-author h4{font-size:14px;font-weight:600;}
+.testimonial-author span{color:#aaa;font-size:12px;}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;}
+.contact-info h2{font-size:36px;font-weight:800;margin-bottom:20px;}
+.contact-info p{color:#aaa;font-size:15px;line-height:1.8;margin-bottom:30px;}
+.contact-item{display:flex;align-items:center;gap:15px;padding:15px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.contact-icon{width:44px;height:44px;background:rgba(0,255,255,0.1);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.contact-item h4{font-size:14px;font-weight:600;margin-bottom:3px;}
+.contact-item p{color:#aaa;font-size:13px;margin:0;}
+.contact-form{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:18px;padding:35px;}
+.contact-form h3{font-size:22px;font-weight:700;margin-bottom:22px;}
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;color:#aaa;font-size:13px;margin-bottom:7px;}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:12px 15px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:white;font-size:14px;outline:none;transition:0.3s;}
+.form-group input:focus,.form-group textarea:focus{border-color:#00ffff;box-shadow:0 0 0 3px rgba(0,255,255,0.08);}
+.form-group textarea{height:110px;resize:none;}
+footer{background:#060810;border-top:1px solid rgba(255,255,255,0.05);padding:60px 50px 30px;}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px;}
+.footer-brand p{color:#aaa;font-size:13px;line-height:1.8;margin-top:15px;}
+.footer-col h4{font-size:15px;font-weight:700;margin-bottom:18px;}
+.footer-col a{display:block;color:#aaa;text-decoration:none;font-size:13px;margin-bottom:10px;transition:0.3s;}
+.footer-col a:hover{color:#00ffff;}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.05);padding-top:25px;display:flex;justify-content:space-between;align-items:center;}
+.footer-bottom p{color:#aaa;font-size:13px;}
+.socials{display:flex;gap:10px;}
+.social-btn{width:36px;height:36px;background:rgba(255,255,255,0.05);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;transition:0.3s;}
+.social-btn:hover{background:rgba(0,255,255,0.1);}
+.reveal{opacity:0;transform:translateY(40px);transition:0.8s;}
+.reveal.show{opacity:1;transform:translateY(0);}
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+.bg-alt{background:rgba(255,255,255,0.02);}
+@media(max-width:768px){
+header{padding:15px 20px;}
+nav{display:none;}
+.hero h1{font-size:36px;}
+.stats-bar{grid-template-columns:repeat(2,1fr);}
+section{padding:60px 20px;}
+.about-grid,.contact-grid{grid-template-columns:1fr;}
+.footer-grid{grid-template-columns:1fr 1fr;}
+}
+/* Dark/Light Toggle */
+#themeToggle{position:fixed;bottom:25px;left:25px;width:48px;height:48px;border-radius:50%;background:rgba(0,255,255,0.15);border:1px solid rgba(0,255,255,0.4);font-size:22px;cursor:pointer;z-index:999;display:flex;align-items:center;justify-content:center;transition:0.3s;}
+#themeToggle:hover{background:rgba(0,255,255,0.3);}
+/* Back to Top */
+#backTop{position:fixed;bottom:90px;left:25px;width:48px;height:48px;border-radius:50%;background:rgba(0,255,255,0.15);border:1px solid rgba(0,255,255,0.4);font-size:20px;cursor:pointer;z-index:999;display:none;align-items:center;justify-content:center;transition:0.3s;}
+#backTop:hover{background:rgba(0,255,255,0.3);}
+/* Light mode */
+body.light-mode{background:#f0f4f8;color:#111;}
+body.light-mode header{background:rgba(240,244,248,0.97);border-color:rgba(0,150,255,0.2);}
+body.light-mode nav a{color:#444;}
+body.light-mode .stats-bar{background:rgba(0,150,255,0.04);}
+body.light-mode .course-card,body.light-mode .placement-card,body.light-mode .testimonial-card,body.light-mode .value-card{background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.1);}
+body.light-mode .contact-form{background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.1);}
+body.light-mode footer{background:#e2e8f0;}
+body.light-mode .form-group input,body.light-mode .form-group textarea{background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.15);color:#111;}
+/* Floating CTA */
+#floatCTA{position:fixed;bottom:160px;left:25px;background:linear-gradient(135deg,#00ffff,#0080ff);color:#000;padding:10px 16px;border-radius:12px;font-size:12px;font-weight:800;cursor:pointer;z-index:999;text-decoration:none;box-shadow:0 4px 20px rgba(0,255,255,0.4);animation:floatBounce 2s ease-in-out infinite;}
+@keyframes floatBounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+/* Typing animation */
+.typed-cursor{color:#00ffff;animation:blink 0.7s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.ai-opt{padding:10px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#ccc;cursor:pointer;font-size:13px;transition:0.2s;text-align:left;}
+.ai-opt:hover,.ai-opt.selected{background:rgba(0,255,255,0.1);border-color:#00ffff;color:#00ffff;}
+</style>
+</head>
+<body>
+<div id="scrollBar"></div>
+
+<!-- LOADER -->
+<div id="loader" style="position:fixed;inset:0;background:#0b0f1a;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.6s;">
+  <div style="font-size:52px;margin-bottom:14px;animation:spin 1s linear infinite;">🎓</div>
+  <div style="color:#00ffff;font-size:20px;font-weight:800;margin-bottom:20px;">TCF Institute</div>
+  <div style="width:200px;height:4px;background:rgba(255,255,255,0.1);border-radius:4px;overflow:hidden;">
+    <div style="height:100%;background:linear-gradient(90deg,#00ffff,#0080ff);border-radius:4px;animation:loadBar 1.5s ease forwards;"></div>
+  </div>
+</div>
+<style>
+@keyframes spin{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
+@keyframes loadBar{from{width:0%;}to{width:100%;}}
+</style>
+
+<!-- COOKIE CONSENT -->
+<div id="cookieBar" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#111827;border-top:1px solid rgba(0,255,255,0.15);padding:16px 30px;display:flex;justify-content:space-between;align-items:center;z-index:9990;flex-wrap:wrap;gap:12px;">
+  <p style="color:#aaa;font-size:13px;">🍪 We use cookies to improve your experience. <a href="#" style="color:#00ffff;">Learn more</a></p>
+  <div style="display:flex;gap:10px;">
+    <button onclick="acceptCookies()" style="padding:8px 20px;background:linear-gradient(135deg,#00ffff,#0080ff);color:#000;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:13px;">Accept All</button>
+    <button onclick="document.getElementById('cookieBar').style.display='none'" style="padding:8px 16px;background:rgba(255,255,255,0.06);color:#aaa;border:none;border-radius:8px;cursor:pointer;font-size:13px;">Decline</button>
+  </div>
+</div>
+<div class="announce-bar">
+  <marquee behavior="scroll" direction="left" scrollamount="5">🎓 New Batch Starting Jan 15! &nbsp;&nbsp;&nbsp; 🔥 Limited Seats Available — Enroll Now! &nbsp;&nbsp;&nbsp; 💼 350+ Students Placed in Top MNCs &nbsp;&nbsp;&nbsp; 🎁 Free Demo Class Every Saturday 10AM &nbsp;&nbsp;&nbsp; ☁️ AWS Cloud Course Now Available! &nbsp;&nbsp;&nbsp;</marquee>
+</div>
+
+<header style="top:33px;">
+<a href="index.html" class="logo">
+<img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">TCF Institute
+</a>
+<nav>
+<a href="index.html">Home</a>
+<a href="courses.html">Courses</a>
+<a href="placements.html">Placements</a>
+<a href="mock-assessment.html">Mock Assessment</a>
+<a href="about.html">About</a>
+<a href="contact.html">Contact</a>
+<a href="auth.html">Login</a>
+<a href="apply.html" style="background:rgba(0,255,255,0.15);color:#00ffff;">Apply Now</a>
+<a href="dashboard.html" class="nav-btn">📊 Dashboard</a>
+</nav>
+</header>
+
+<!-- HERO -->
+<section class="hero show">
+<div class="hero-badge">🎓 Chennai's #1 Technology Training Institute</div>
+<h1>Build Your Future<br>With TCF Institute</h1>
+<p><span id="typedText"></span><span class="typed-cursor">|</span></p>
+<div class="hero-btns">
+<a href="courses.html" class="btn btn-primary">🚀 Explore Courses</a>
+<a href="about.html" class="btn btn-outline">Learn More</a>
+</div>
+</section>
+
+<!-- NEW AI SECTION -->
+<section class="reveal" style="background: radial-gradient(circle at center, #1e293b 0%, #0b0f1a 100%); padding: 120px 50px; border-bottom: 1px solid rgba(0,255,255,0.1);">
+    <div class="container" style="max-width: 1200px; margin: 0 auto;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;">
+            <div style="background: rgba(17, 24, 39, 0.85); padding: 50px; border-radius: 35px; border: 2px solid rgba(0,255,255,0.25); backdrop-filter: blur(15px); box-shadow: 0 0 50px rgba(0,255,255,0.1);">
+                <div class="section-tag" style="background: rgba(0,255,255,0.1); display: inline-block; padding: 5px 15px; border-radius: 20px; color: #00ffff; margin-bottom: 20px;">NEW: AI PLACEMENT BOT</div>
+                <h2 class="section-title" style="font-size: 52px; margin-bottom: 25px; line-height: 1.1;">AI Mock Interview <span style="color: #00ffff; text-shadow: 0 0 20px rgba(0,255,255,0.5);">Pro Max</span></h2>
+                <p style="color: #cbd5e1; font-size: 19px; line-height: 1.8; margin-bottom: 35px;">Experience the future of recruitment. Our Pro Max AI bot uses real-time Voice-to-Text and Proctored Camera Analysis to simulate elite MNC hiring rounds with instant scoring.</p>
+                <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 40px;">
+                    <div style="display: flex; align-items: center; gap: 18px; color: #fff;"><span style="font-size: 28px;">🎙️</span> <b style="letter-spacing: 0.5px;">Voice-to-Text Conversational Engine</b></div>
+                    <div style="display: flex; align-items: center; gap: 18px; color: #fff;"><span style="font-size: 28px;">📷</span> <b style="letter-spacing: 0.5px;">Proctored Camera Behavior Analysis</b></div>
+                    <div style="display: flex; align-items: center; gap: 18px; color: #fff;"><span style="font-size: 28px;">📊</span> <b style="letter-spacing: 0.5px;">Instant AI Performance Scorecard</b></div>
+                </div>
+                <a href="interview.html" class="btn btn-primary" style="font-size: 20px; padding: 22px 45px; width: 100%; text-align: center; background: linear-gradient(90deg, #00ffff, #0080ff); color: #000; box-shadow: 0 10px 40px rgba(0,255,255,0.4); border-radius: 15px; text-transform: uppercase; letter-spacing: 1px;">Launch Pro Interview Bot ⚡</a>
+            </div> 
+            <div style="position: relative; text-align: center;">
+                <div style="font-size: 220px; filter: drop-shadow(0 0 50px #00ffff); animation: float 6s ease-in-out infinite;">🤖</div>
+                <div style="position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); width: 200px; height: 10px; background: rgba(0,255,255,0.1); filter: blur(10px); border-radius: 50%;"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+<div class="stat-item"><h3 class="counter" data-target="1500">0</h3><p>Students Trained</p></div>
+<div class="stat-item"><h3 class="counter" data-target="350">0</h3><p>Students Placed</p></div>
+<div class="stat-item"><h3 class="counter" data-target="8">0</h3><p>Courses Offered</p></div>
+<div class="stat-item"><h3 class="counter" data-target="10">0</h3><p>Years Experience</p></div>
+</div>
+
+<!-- ABOUT -->
+<section class="reveal">
+<div class="about-grid">
+<div class="about-img"><img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f"></div>
+<div class="about-content">
+<div class="section-tag">About TCF Institute</div>
+<h2>We Shape Careers,<br>Not Just Skills</h2>
+<p>TCF Institute is a premier technology training center in Chennai, dedicated to bridging the gap between education and industry. Since 2015, we have been empowering students with practical IT skills and real-world experience.</p>
+<p>Our expert trainers bring 10+ years of industry experience to every class, ensuring you learn what actually matters in today's job market.</p>
+<ul class="feature-list">
+<li><span>✅</span> Expert trainers with 10+ years industry experience</li>
+<li><span>✅</span> Live projects and hands-on practical training</li>
+<li><span>✅</span> 100% placement assistance guaranteed</li>
+<li><span>✅</span> Resume building and mock interview preparation</li>
+<li><span>✅</span> Flexible morning and evening batch timings</li>
+<li><span>✅</span> Industry-recognized certification</li>
+</ul>
+<br>
+<a href="about.html" class="btn btn-primary">Know More About Us</a>
+</div>
+</div>
+</section>
+
+<!-- COUNTDOWN -->
+<div class="countdown-banner reveal">
+  <h3>⏰ Next Free Demo Class Starts In</h3>
+  <div class="timer-boxes">
+    <div class="timer-box"><span class="num" id="tDays">00</span><span class="lbl">Days</span></div>
+    <div class="timer-box"><span class="num" id="tHours">00</span><span class="lbl">Hours</span></div>
+    <div class="timer-box"><span class="num" id="tMins">00</span><span class="lbl">Mins</span></div>
+    <div class="timer-box"><span class="num" id="tSecs">00</span><span class="lbl">Secs</span></div>
+  </div>
+  <a href="apply.html" class="btn btn-primary" style="margin-top:18px;display:inline-block;">🎯 Register for Free Demo</a>
+</div>
+
+<!-- COURSES -->
+<section class="bg-alt reveal">
+<div style="text-align:center;">
+<div class="section-tag">Our Courses</div>
+<h2 class="section-title">Learn From The Best</h2>
+<p class="section-sub">Industry-focused courses designed to make you job-ready with practical skills and placement support</p>
+</div>
+<div class="courses-grid">
+<div class="course-card" onclick="location.href='apply.html?course=Web Development'">
+<img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085">
+<div class="course-body">
+<span class="course-tag">⭐ Most Popular</span>
+<h3>Web Development</h3>
+<p>Master HTML, CSS, JavaScript, React and Node.js with real-world projects and placement support.</p>
+<div class="course-footer"><span class="course-price">₹5,000</span><button class="course-btn">Enroll Now</button></div>
+</div>
+</div>
+<div class="course-card" onclick="location.href='apply.html?course=Software Testing'">
+<img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4">
+<div class="course-body">
+<span class="course-tag">🔥 High Demand</span>
+<h3>Software Testing</h3>
+<p>Learn Manual Testing, Selenium Automation and get certified for top QA engineer roles.</p>
+<div class="course-footer"><span class="course-price">₹4,500</span><button class="course-btn">Enroll Now</button></div>
+</div>
+</div>
+<div class="course-card" onclick="location.href='apply.html?course=Data Analytics'">
+<img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71">
+<div class="course-body">
+<span class="course-tag">📈 Trending</span>
+<h3>Data Analytics</h3>
+<p>Master Python, SQL, Power BI and Excel to become a data-driven professional.</p>
+<div class="course-footer"><span class="course-price">₹3,000</span><button class="course-btn">Enroll Now</button></div>
+</div>
+</div>
+<div class="course-card" onclick="location.href='apply.html?course=Python Programming'">
+<img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d">
+<div class="course-body">
+<span class="course-tag">🆕 New</span>
+<h3>Python Programming</h3>
+<p>Learn Python from basics to advanced with real projects, automation and data science basics.</p>
+<div class="course-footer"><span class="course-price">₹3,500</span><button class="course-btn">Enroll Now</button></div>
+</div>
+</div>
+<div class="course-card" onclick="location.href='apply.html?course=Java Full Stack'">
+<img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3">
+<div class="course-body">
+<span class="course-tag">💼 Job Ready</span>
+<h3>Java Full Stack</h3>
+<p>Master Core Java, Spring Boot, Hibernate and build enterprise-level applications.</p>
+<div class="course-footer"><span class="course-price">₹6,000</span><button class="course-btn">Enroll Now</button></div>
+</div>
+</div>
+<div class="course-card" onclick="location.href='apply.html?course=AWS Cloud Computing'">
+<img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31">
+<div class="course-body">
+<span class="course-tag">☁️ Cloud</span>
+<h3>AWS Cloud Computing</h3>
+<p>Learn Amazon Web Services, cloud deployment, EC2, S3 and get AWS certified.</p>
+<div class="course-footer"><span class="course-price">₹7,000</span><button class="course-btn">Enroll Now</button></div>
+</div>
+</div>
+</div>
+<div style="text-align:center;margin-top:40px;">
+<a href="courses.html" class="btn btn-outline">View All Courses →</a>
+</div>
+</section>
+
+<!-- PLACEMENTS -->
+<section class="reveal">
+<div style="text-align:center;">
+<div class="section-tag">Placements</div>
+<h2 class="section-title">Our Students Work At</h2>
+<p class="section-sub">350+ students placed in top MNC companies across India with competitive packages</p>
+</div>
+<div class="placement-grid">
+<div class="placement-card" onclick="location.href='placements.html'">
+<img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Tata_Consultancy_Services_Logo.svg">
+<h3>TCS</h3><p>Tata Consultancy Services</p>
+<span class="placement-count">25 Students Placed</span>
+</div>
+<div class="placement-card" onclick="location.href='placements.html'">
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Infosys_logo.svg">
+<h3>Infosys</h3><p>Infosys Limited</p>
+<span class="placement-count">18 Students Placed</span>
+</div>
+<div class="placement-card" onclick="location.href='placements.html'">
+<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Wipro_Primary_Logo_Color_RGB.svg">
+<h3>Wipro</h3><p>Wipro Technologies</p>
+<span class="placement-count">15 Students Placed</span>
+</div>
+</div>
+<div style="text-align:center;margin-top:40px;">
+<a href="placements.html" class="btn btn-outline">View All Placements →</a>
+</div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="bg-alt reveal">
+<div style="text-align:center;">
+<div class="section-tag">Testimonials</div>
+<h2 class="section-title">What Our Students Say</h2>
+<p class="section-sub">Real success stories from students who transformed their careers with TCF Institute</p>
+</div>
+<div class="testimonial-slider">
+  <div class="testimonial-track" id="tTrack">
+    <div class="testimonial-card"><div class="stars">⭐⭐⭐⭐⭐</div><p>"TCF Institute completely changed my career. The trainers are amazing and the placement support is outstanding. I got placed in TCS within 2 months!"</p><div class="testimonial-author"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100"><div><h4>Priya Sharma</h4><span>Web Developer at TCS</span></div></div></div>
+    <div class="testimonial-card"><div class="stars">⭐⭐⭐⭐⭐</div><p>"The Software Testing course was very practical. I learned Selenium automation and got placed in Infosys with a great package. Best decision of my life!"</p><div class="testimonial-author"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100"><div><h4>Rahul Kumar</h4><span>QA Engineer at Infosys</span></div></div></div>
+    <div class="testimonial-card"><div class="stars">⭐⭐⭐⭐⭐</div><p>"Data Analytics course gave me exactly the skills I needed. The live projects and mock interviews prepared me perfectly. Now working at Wipro!"</p><div class="testimonial-author"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100"><div><h4>Anitha Reddy</h4><span>Data Analyst at Wipro</span></div></div></div>
+    <div class="testimonial-card"><div class="stars">⭐⭐⭐⭐⭐</div><p>"Java Full Stack course was incredible. The Spring Boot and Angular training helped me land a job at HCL with ₹5 LPA package within 3 months!"</p><div class="testimonial-author"><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100"><div><h4>Suresh Babu</h4><span>Java Developer at HCL</span></div></div></div>
+    <div class="testimonial-card"><div class="stars">⭐⭐⭐⭐⭐</div><p>"AWS Cloud course was top-notch. Got AWS certified and placed at Tech Mahindra. TCF's placement support is unmatched — highly recommend!"</p><div class="testimonial-author"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100"><div><h4>Karthik Raja</h4><span>Cloud Engineer at Tech Mahindra</span></div></div></div>
+  </div>
+  <div class="slider-dots" id="sliderDots"></div>
+</div>
+</section>
+
+<!-- CONTACT -->
+<section class="reveal">
+<div style="text-align:center;">
+<div class="section-tag">Contact Us</div>
+<h2 class="section-title">Get In Touch</h2>
+<p class="section-sub">Have questions? We're here to help you start your journey towards a successful career</p>
+</div>
+<div class="contact-grid">
+<div class="contact-info">
+<h2>Let's Talk About<br>Your Future</h2>
+<p>Reach out to us for course details, admissions, placements or any other queries. Our counselors are available Monday to Saturday to guide you.</p>
+<div class="contact-item"><div class="contact-icon">📞</div><div><h4>Phone</h4><p>+91 9876543210</p></div></div>
+<div class="contact-item"><div class="contact-icon">✉️</div><div><h4>Email</h4><p>tcftechnologies@gmail.com</p></div></div>
+<div class="contact-item"><div class="contact-icon">📍</div><div><h4>Location</h4><p>Chennai, Tamil Nadu, India</p></div></div>
+<div class="contact-item"><div class="contact-icon">🕐</div><div><h4>Working Hours</h4><p>Mon - Sat: 9AM - 6PM</p></div></div>
+</div>
+<div class="contact-form">
+<h3>Send Us a Message</h3>
+<div class="form-group"><label>Full Name</label><input type="text" placeholder="Your full name"></div>
+<div class="form-group"><label>Email</label><input type="email" placeholder="Your email"></div>
+<div class="form-group"><label>Phone</label><input type="text" placeholder="Your phone number"></div>
+<div class="form-group"><label>Message</label><textarea placeholder="Your message..."></textarea></div>
+<button class="btn btn-primary" style="width:100%;" onclick="alert('Message sent! We will contact you soon. 😊')">Send Message 🚀</button>
+</div>
+</div>
+</section>
+
+<!-- STUDENT OF THE MONTH -->
+<section class="reveal" style="padding:60px 50px;">
+<div style="text-align:center;margin-bottom:40px;">
+  <div class="section-tag">🌟 Recognition</div>
+  <h2 class="section-title">Student of the Month</h2>
+  <p class="section-sub">Celebrating our top performers every month!</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:25px;">
+  <div style="background:linear-gradient(135deg,rgba(255,215,0,0.08),rgba(255,152,0,0.05));border:2px solid rgba(255,215,0,0.3);border-radius:20px;padding:30px;text-align:center;position:relative;">
+    <div style="position:absolute;top:-15px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#ff9800,#ff6400);padding:6px 18px;border-radius:20px;font-size:12px;font-weight:800;color:#000;">🥇 MAY 2026</div>
+    <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#00ffff,#0080ff);display:flex;align-items:center;justify-content:center;font-size:32px;margin:20px auto 15px;">👩</div>
+    <h3 style="font-size:18px;font-weight:800;margin-bottom:5px;">Priya Sharma</h3>
+    <p style="color:#ff9800;font-size:13px;font-weight:600;margin-bottom:8px;">Web Development</p>
+    <p style="color:#aaa;font-size:12px;">Completed all topics in 3 weeks, scored 95% in quiz, placed at TCS!</p>
+    <div style="margin-top:12px;display:flex;justify-content:center;gap:8px;">
+      <span style="background:rgba(0,255,255,0.1);color:#00ffff;padding:4px 10px;border-radius:20px;font-size:11px;">⚡ 850 XP</span>
+      <span style="background:rgba(76,175,80,0.1);color:#4caf50;padding:4px 10px;border-radius:20px;font-size:11px;">🏆 Master</span>
+    </div>
+  </div>
+  <div style="background:linear-gradient(135deg,rgba(192,192,192,0.08),rgba(150,150,150,0.05));border:2px solid rgba(192,192,192,0.3);border-radius:20px;padding:30px;text-align:center;position:relative;">
+    <div style="position:absolute;top:-15px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#9e9e9e,#616161);padding:6px 18px;border-radius:20px;font-size:12px;font-weight:800;color:#fff;">🥈 APR 2026</div>
+    <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#9c27b0,#e040fb);display:flex;align-items:center;justify-content:center;font-size:32px;margin:20px auto 15px;">👨</div>
+    <h3 style="font-size:18px;font-weight:800;margin-bottom:5px;">Rahul Kumar</h3>
+    <p style="color:#9e9e9e;font-size:13px;font-weight:600;margin-bottom:8px;">Software Testing</p>
+    <p style="color:#aaa;font-size:12px;">Perfect attendance, helped 10 classmates, placed at Infosys!</p>
+    <div style="margin-top:12px;display:flex;justify-content:center;gap:8px;">
+      <span style="background:rgba(0,255,255,0.1);color:#00ffff;padding:4px 10px;border-radius:20px;font-size:11px;">⚡ 720 XP</span>
+      <span style="background:rgba(156,39,176,0.1);color:#e040fb;padding:4px 10px;border-radius:20px;font-size:11px;">🟡 Expert</span>
+    </div>
+  </div>
+  <div style="background:linear-gradient(135deg,rgba(205,127,50,0.08),rgba(180,100,30,0.05));border:2px solid rgba(205,127,50,0.3);border-radius:20px;padding:30px;text-align:center;position:relative;">
+    <div style="position:absolute;top:-15px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#cd7f32,#a0522d);padding:6px 18px;border-radius:20px;font-size:12px;font-weight:800;color:#fff;">🥉 MAR 2026</div>
+    <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#ff6400,#ff9800);display:flex;align-items:center;justify-content:center;font-size:32px;margin:20px auto 15px;">👩</div>
+    <h3 style="font-size:18px;font-weight:800;margin-bottom:5px;">Anitha Reddy</h3>
+    <p style="color:#cd7f32;font-size:13px;font-weight:600;margin-bottom:8px;">Data Analytics</p>
+    <p style="color:#aaa;font-size:12px;">Built 3 real projects, top quiz scorer, placed at Wipro!</p>
+    <div style="margin-top:12px;display:flex;justify-content:center;gap:8px;">
+      <span style="background:rgba(0,255,255,0.1);color:#00ffff;padding:4px 10px;border-radius:20px;font-size:11px;">⚡ 650 XP</span>
+      <span style="background:rgba(255,152,0,0.1);color:#ff9800;padding:4px 10px;border-radius:20px;font-size:11px;">🟠 Pro</span>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- AI COURSE RECOMMENDER -->
+<section class="bg-alt reveal" style="padding:60px 50px;">
+<div style="text-align:center;margin-bottom:30px;">
+  <div class="section-tag">🤖 AI Powered</div>
+  <h2 class="section-title">Find Your Perfect Course</h2>
+  <p class="section-sub">Answer 3 quick questions — our AI recommends the best course for you!</p>
+</div>
+<div style="max-width:600px;margin:0 auto;background:rgba(255,255,255,0.03);border:1px solid rgba(0,255,255,0.15);border-radius:20px;padding:35px;">
+  <div id="aiStep1">
+    <p style="color:#aaa;font-size:14px;margin-bottom:16px;">1️⃣ What is your background?</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">
+      <button onclick="aiAnswer('bg','fresher',this)" class="ai-opt">🎓 Fresher / Student</button>
+      <button onclick="aiAnswer('bg','working',this)" class="ai-opt">💼 Working Professional</button>
+      <button onclick="aiAnswer('bg','career',this)" class="ai-opt">🔄 Career Change</button>
+      <button onclick="aiAnswer('bg','coding',this)" class="ai-opt">💻 Know Basic Coding</button>
+    </div>
+    <p style="color:#aaa;font-size:14px;margin-bottom:16px;">2️⃣ What interests you most?</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">
+      <button onclick="aiAnswer('int','build',this)" class="ai-opt">🌐 Build Websites/Apps</button>
+      <button onclick="aiAnswer('int','test',this)" class="ai-opt">🧪 Test Software</button>
+      <button onclick="aiAnswer('int','data',this)" class="ai-opt">📊 Analyze Data</button>
+      <button onclick="aiAnswer('int','cloud',this)" class="ai-opt">☁️ Cloud & DevOps</button>
+    </div>
+    <p style="color:#aaa;font-size:14px;margin-bottom:16px;">3️⃣ What is your budget?</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px;">
+      <button onclick="aiAnswer('budget','low',this)" class="ai-opt">💰 Under ₹4,000</button>
+      <button onclick="aiAnswer('budget','mid',this)" class="ai-opt">💰 ₹4,000 - ₹6,000</button>
+      <button onclick="aiAnswer('budget','high',this)" class="ai-opt">💰 Above ₹6,000</button>
+      <button onclick="aiAnswer('budget','any',this)" class="ai-opt">✅ Any Budget</button>
+    </div>
+    <button onclick="getAIRecommendation()" style="width:100%;padding:14px;background:linear-gradient(135deg,#00ffff,#0080ff);color:#000;border:none;border-radius:10px;font-weight:800;font-size:15px;cursor:pointer;">🤖 Get My Recommendation →</button>
+  </div>
+  <div id="aiResult" style="display:none;text-align:center;"></div>
+</div>
+</section>
+
+<!-- PWA INSTALL BANNER -->
+<div id="pwaBar" style="display:none;position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,#111827,#0d1117);border-top:1px solid rgba(0,255,255,0.2);padding:14px 24px;display:flex;justify-content:space-between;align-items:center;z-index:998;">
+  <div style="display:flex;align-items:center;gap:12px;">
+    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" style="width:36px;height:36px;border-radius:8px;">
+    <div><p style="font-weight:700;font-size:14px;">Install TCF Institute App</p><p style="color:#555;font-size:12px;">Add to home screen for quick access!</p></div>
+  </div>
+  <div style="display:flex;gap:10px;">
+    <button onclick="installPWA()" style="padding:8px 20px;background:linear-gradient(135deg,#00ffff,#0080ff);color:#000;border:none;border-radius:8px;font-weight:700;cursor:pointer;">Install</button>
+    <button onclick="document.getElementById('pwaBar').style.display='none'" style="padding:8px 14px;background:rgba(255,255,255,0.06);color:#aaa;border:none;border-radius:8px;cursor:pointer;">✕</button>
+  </div>
+</div>
+<footer>
+<div class="footer-grid">
+<div class="footer-brand">
+<a href="index.html" class="logo" style="font-size:20px;"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">TCF Institute</a>
+<p>Empowering students with technology skills and career opportunities since 2015. Join us and build your dream career.</p>
+</div>
+<div class="footer-col">
+<h4>Quick Links</h4>
+<a href="index.html">Home</a>
+<a href="about.html">About Us</a>
+<a href="courses.html">Courses</a>
+<a href="placements.html">Placements</a>
+<a href="contact.html">Contact</a>
+<a href="blog.html">📰 Blog</a>
+<a href="gallery.html">📸 Gallery</a>
+<a href="alumni.html">🎓 Alumni</a>
+<a href="events.html">📅 Events</a>
+<a href="sitemap.html">🗺️ Sitemap</a>
+</div>
+<div class="footer-col">
+<h4>Courses</h4>
+<a href="courses.html">Web Development</a>
+<a href="courses.html">Software Testing</a>
+<a href="courses.html">Data Analytics</a>
+<a href="courses.html">Python Programming</a>
+<a href="courses.html">Java Full Stack</a>
+<a href="courses.html">AWS Cloud</a>
+</div>
+<div class="footer-col">
+<h4>Contact</h4>
+<a href="#">+91 9876543210</a>
+<a href="#">tcftechnologies@gmail.com</a>
+<a href="#">Chennai, Tamil Nadu</a>
+<a href="#">Mon-Sat: 9AM - 6PM</a>
+</div>
+</div>
+<div class="footer-bottom">
+<p>© 2026 TCF Institute. All rights reserved.</p>
+<div class="socials">
+<div class="social-btn">🌐</div>
+<div class="social-btn">📘</div>
+<div class="social-btn">📸</div>
+<div class="social-btn">▶</div>
+</div>
+</div>
+</footer>
+
+<!-- Dark/Light Toggle -->
+<button id="themeToggle" onclick="toggleTheme()" title="Toggle Theme">🌙</button>
+<!-- Back to Top -->
+<button id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to Top">⬆️</button>
+<!-- Floating CTA -->
+<a id="floatCTA" href="apply.html">🚀 Apply Now!</a>
+
+<script>
+window.addEventListener('scroll',()=>{
+  document.querySelectorAll('.reveal').forEach(el=>{
+    if(el.getBoundingClientRect().top<window.innerHeight-80) el.classList.add('show');
+  });
+  const bt=document.getElementById('backTop');
+  bt.style.display=window.scrollY>400?'flex':'none';
+});
+const counters=document.querySelectorAll('.counter');
+let started=false;
+window.addEventListener('scroll',()=>{
+  if(!started && document.querySelector('.stats-bar').getBoundingClientRect().top<window.innerHeight){
+    started=true;
+    counters.forEach(c=>{
+      let target=+c.getAttribute('data-target'),count=0,speed=target/80;
+      let update=()=>{count+=speed;if(count<target){c.innerText=Math.floor(count);requestAnimationFrame(update);}else c.innerText=target+'+';}
+      update();
+    });
+  }
+});
+function toggleTheme(){
+  document.body.classList.toggle('light-mode');
+  document.getElementById('themeToggle').innerText=document.body.classList.contains('light-mode')?'🌞':'🌙';
+  localStorage.setItem('theme',document.body.classList.contains('light-mode')?'light':'dark');
+}
+if(localStorage.getItem('theme')==='light'){document.body.classList.add('light-mode');document.getElementById('themeToggle').innerText='🌞';}
+// Glassmorphism header on scroll
+window.addEventListener('scroll',()=>document.querySelector('header').classList.toggle('scrolled',window.scrollY>50));
+// Hero Canvas Particles
+const canvas=document.createElement('canvas');canvas.id='heroCanvas';
+document.querySelector('.hero').prepend(canvas);
+const ctx=canvas.getContext('2d');
+let W,H,pts=[];
+function resize(){W=canvas.width=canvas.offsetWidth;H=canvas.height=canvas.offsetHeight;}
+resize();window.addEventListener('resize',resize);
+for(let i=0;i<80;i++)pts.push({x:Math.random()*2000,y:Math.random()*900,vx:(Math.random()-0.5)*0.4,vy:(Math.random()-0.5)*0.4,r:Math.random()*2+1});
+function drawCanvas(){
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='rgba(11,15,26,0.85)';
+  ctx.fillRect(0,0,W,H);
+  pts.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<0||p.x>W)p.vx*=-1;
+    if(p.y<0||p.y>H)p.vy*=-1;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle='rgba(0,255,255,0.6)';ctx.fill();
+  });
+  pts.forEach((a,i)=>pts.slice(i+1).forEach(b=>{
+    const d=Math.hypot(a.x-b.x,a.y-b.y);
+    if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
+    ctx.strokeStyle=`rgba(0,255,255,${0.15*(1-d/120)})`;ctx.lineWidth=0.5;ctx.stroke();}
+  }));
+  requestAnimationFrame(drawCanvas);
+}
+drawCanvas();
+// Testimonial Auto Slider
+const track=document.getElementById('tTrack');
+const cards=track.querySelectorAll('.testimonial-card');
+const dotsEl=document.getElementById('sliderDots');
+let tIdx=0,tAuto;
+const perView=window.innerWidth<768?1:3;
+const maxIdx=Math.ceil(cards.length/perView)-1;
+for(let i=0;i<=maxIdx;i++){const d=document.createElement('button');d.className='slider-dot'+(i===0?' active':'');d.onclick=()=>goSlide(i);dotsEl.appendChild(d);}
+function goSlide(i){tIdx=i;const w=cards[0].offsetWidth+25;track.style.transform=`translateX(-${i*perView*w}px)`;document.querySelectorAll('.slider-dot').forEach((d,j)=>d.classList.toggle('active',j===i));}
+tAuto=setInterval(()=>goSlide(tIdx>=maxIdx?0:tIdx+1),3500);
+track.addEventListener('mouseenter',()=>clearInterval(tAuto));
+track.addEventListener('mouseleave',()=>{tAuto=setInterval(()=>goSlide(tIdx>=maxIdx?0:tIdx+1),3500);});
+// Typing animation
+const phrases=['Join 1500+ students who transformed their careers! 🚀','Industry-focused training with 100% placement support. 🎓','Expert mentors with 10+ years of experience. 💡','Get placed in TCS, Infosys, Wipro & more! 🏆'];
+let pi=0,ci=0,del=false;
+function typeIt(){
+  const el=document.getElementById('typedText');
+  const phrase=phrases[pi];
+  if(!del){el.textContent=phrase.slice(0,++ci);if(ci===phrase.length){del=true;setTimeout(typeIt,2000);return;}}
+  else{el.textContent=phrase.slice(0,--ci);if(ci===0){del=false;pi=(pi+1)%phrases.length;}}
+  setTimeout(typeIt,del?40:60);
+}
+typeIt();
+</script>
+<!-- WhatsApp Button -->
+<a id="waBtn" href="https://wa.me/919876543210?text=Hi! I'm interested in TCF Institute courses" target="_blank">💬</a>
+
+<!-- Notification Bell -->
+<div id="notifBtn" style="position:fixed;bottom:160px;right:28px;">
+  <span>🔔</span>
+  <div id="notifDot">3</div>
+</div>
+<div id="notifPanel">
+  <h4>🔔 Notifications</h4>
+  <div class="notif-item">🎓 New batch starting Jan 15 — Limited seats!<span>2 hours ago</span></div>
+  <div class="notif-item">🎁 Free Demo Class this Saturday 10AM<span>1 day ago</span></div>
+  <div class="notif-item">🏆 350+ students placed — Check placements!<span>2 days ago</span></div>
+</div>
+
+<script src="chatbot.js"></script>
+<script>
+// Scroll Progress Bar
+window.addEventListener('scroll',()=>{
+  const s=document.documentElement;
+  const pct=(s.scrollTop/(s.scrollHeight-s.clientHeight))*100;
+  document.getElementById('scrollBar').style.width=pct+'%';
+});
+
+// Notification Bell toggle
+document.getElementById('notifBtn').addEventListener('click',()=>{
+  const p=document.getElementById('notifPanel');
+  p.style.display=p.style.display==='block'?'none':'block';
+  document.getElementById('notifDot').style.display='none';
+});
+
+// Countdown Timer — next Saturday 10AM
+function getNextSaturday(){
+  const now=new Date();
+  const day=now.getDay();
+  const diff=(6-day+7)%7||7;
+  const sat=new Date(now);
+  sat.setDate(now.getDate()+diff);
+  sat.setHours(10,0,0,0);
+  return sat;
+}
+function updateTimer(){
+  const diff=getNextSaturday()-new Date();
+  if(diff<=0){updateTimer();return;}
+  document.getElementById('tDays').textContent=String(Math.floor(diff/86400000)).padStart(2,'0');
+  document.getElementById('tHours').textContent=String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
+  document.getElementById('tMins').textContent=String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+  document.getElementById('tSecs').textContent=String(Math.floor((diff%60000)/1000)).padStart(2,'0');
+}
+setInterval(updateTimer,1000);
+updateTimer();
+setTimeout(()=>{
+  const l=document.getElementById('loader');
+  if(l){l.style.opacity='0';setTimeout(()=>l.style.display='none',600);}
+  if(!localStorage.getItem('cookieAccepted')){
+    setTimeout(()=>{const c=document.getElementById('cookieBar');if(c)c.style.display='flex';},2000);
+  }
+},1800);
+function acceptCookies(){
+  localStorage.setItem('cookieAccepted','1');
+  document.getElementById('cookieBar').style.display='none';
+}
+// AI Course Recommender
+const aiAnswers={};
+function aiAnswer(key,val,el){
+  aiAnswers[key]=val;
+  el.closest('div').querySelectorAll('.ai-opt').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+}
+function getAIRecommendation(){
+  const {int,budget}=aiAnswers;
+  let course,reason,price,link;
+  if(int==='build'){course='Web Development';reason='You love building things! Web Dev is perfect for you.';price='₹5,000';link='apply.html?course=Web Development';}
+  else if(int==='test'){course='Software Testing';reason='Testing is in high demand! Great career choice.';price='₹4,500';link='apply.html?course=Software Testing';}
+  else if(int==='data'){course='Data Analytics';reason='Data is the future! Analytics will make you stand out.';price='₹3,000';link='apply.html?course=Data Analytics';}
+  else if(int==='cloud'){course='AWS Cloud';reason='Cloud is booming! AWS certification = high salary.';price='₹7,000';link='apply.html?course=AWS Cloud Computing';}
+  else{course='Web Development';reason='Web Development is the most popular and versatile course!';price='₹5,000';link='apply.html?course=Web Development';}
+  document.getElementById('aiStep1').style.display='none';
+  document.getElementById('aiResult').style.display='block';
+  document.getElementById('aiResult').innerHTML=`
+    <div style="font-size:48px;margin-bottom:12px;">🤖</div>
+    <h3 style="color:#00ffff;font-size:20px;margin-bottom:8px;">We Recommend:</h3>
+    <h2 style="font-size:28px;font-weight:800;margin-bottom:10px;">${course}</h2>
+    <p style="color:#aaa;font-size:14px;margin-bottom:16px;">${reason}</p>
+    <p style="color:#00ffff;font-size:22px;font-weight:800;margin-bottom:20px;">${price}</p>
+    <a href="${link}" style="display:inline-block;padding:12px 30px;background:linear-gradient(135deg,#00ffff,#0080ff);color:#000;border-radius:10px;font-weight:800;text-decoration:none;margin-bottom:12px;">🚀 Enroll Now</a><br>
+    <button onclick="document.getElementById('aiStep1').style.display='block';document.getElementById('aiResult').style.display='none';" style="background:none;border:none;color:#555;cursor:pointer;font-size:13px;margin-top:8px;">Try Again</button>
+  `;
+}
+// PWA Install
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();
+  deferredPrompt=e;
+  document.getElementById('pwaBar').style.display='flex';
+});
+function installPWA(){
+  if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;document.getElementById('pwaBar').style.display='none';});}
+}
+</script>
+<script src="global.js"></script>
+</body>
+</html>

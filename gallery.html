@@ -1,0 +1,76 @@
+# ✅ TCF Institute - Complete Features
+
+## 🔐 Authentication (auth.html)
+- ✅ **Phone validation**: Only digits allowed (10 digits, starts with 6-9)
+- ✅ **Name validation**: Letters only, min 3 characters
+- ✅ **Email validation**: Proper email format
+- ✅ **Password strength meter**: Weak/Fair/Good/Strong/Very Strong
+- ✅ **Confirm password**: Must match
+- ✅ **Show/Hide password**: Toggle visibility
+- ✅ **Real-time validation**: Instant error messages
+- ✅ **Toast notifications**: Success/error messages
+- ✅ **Professional UI**: Modern gradient buttons, smooth animations
+
+## 📚 My Learning (dashboard.html)
+### Overall Progress
+- Shows average completion % across all courses
+- Displays: Completed, In Progress, Total Courses
+
+### Course Enrollment & Unlock System
+- **Sequential unlock**: Must complete Course 1 to unlock Course 2
+- **Locked courses**: Show 🔒 icon and "Complete previous course" message
+
+### Topic-by-Topic Learning
+- **Each course has multiple topics** (Week 1, Week 2, etc.)
+- **Sequential topic unlock**: Complete Topic 1 → Topic 2 unlocks → Topic 3 unlocks...
+- **Mark Complete button**: Click to complete each topic
+- **Visual indicators**:
+  - ✅ Green = Completed
+  - 📖 Blue = Active (can complete now)
+  - 🔒 Gray = Locked (complete previous topic first)
+- **Progress bar**: Updates automatically as topics are completed
+
+### Quiz System
+- **Quiz unlocks**: Only after ALL topics in a course are completed
+- **Quiz banner**: "🎉 All topics completed! Quiz is unlocked"
+- **Modal popup**: Clean quiz interface
+- **Multiple choice**: 4 options per question
+- **Pass requirement**: 60% or higher
+- **Answer feedback**: Shows correct/wrong answers after submit
+- **Retry option**: Can retake quiz if failed
+
+### Course Completion
+- **Pass quiz** → "Complete Course 🏆" button appears
+- **Click Complete** → Course marked 100% done
+- **Next course unlocks** automatically
+- **Completion badge**: Shows 🏆 icon
+
+## 🎯 Flow Summary
+1. Login/Signup with validated data
+2. Go to "My Learning" section
+3. First course is unlocked, others locked
+4. Complete topics one by one (each unlocks next)
+5. After all topics done → Quiz unlocks
+6. Take quiz, pass with 60%+
+7. Mark course complete
+8. Next course automatically unlocks
+9. Repeat for all courses
+
+## 🗄️ Database Tables
+- `users` - User accounts
+- `courses` - Course list
+- `applications` - Course enrollments
+- `syllabus` - Topics for each course
+- `quizzes` - Quiz questions
+- `quiz_results` - Quiz scores
+- `course_progress` - Overall course completion %
+- `topic_progress` - Individual topic completion tracking
+
+## 🚀 How to Run
+```bash
+cd backend
+node setup.js    # Create tables & seed data
+node server.js   # Start server on port 3000
+```
+
+Open: http://localhost:8000/auth.html

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCF Admin - Live Chat</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif;}
+body{background:#0b0f1a;color:white;height:100vh;display:flex;flex-direction:column;}
+.top-bar{background:#111827;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(0,255,255,0.1);flex-shrink:0;}
+.top-bar h1{color:#00ffff;font-size:18px;}
+.top-bar p{color:#555;font-size:12px;}
+.status-dot{width:10px;height:10px;background:#4caf50;border-radius:50%;display:inline-block;margin-right:6px;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+.chat-layout{display:flex;flex:1;overflow:hidden;}
+
+/* LEFT — student list */
+.student-list{width:280px;background:#111827;border-right:1px solid rgba(255,255,255,0.06);overflow-y:auto;flex-shrink:0;}
+.student-list h3{padding:14px 16px;color:#aaa;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,0.05);}
+.student-item{padding:14px 16px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.04);transition:0.2s;display:flex;align-items:center;gap:10px;}
+.student-item:hover,.student-item.active{background:rgba(0,255,255,0.07);}
+.student-item.active{border-left:3px solid #00ffff;}
+.student-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#00ffff,#0080ff);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.student-name{font-size:13px;font-weight:600;margin-bottom:2px;}
+.student-preview{color:#555;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px;}
+.unread-badge{background:#f44336;color:white;border-radius:50%;width:18px;height:18px;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-left:auto;flex-shrink:0;}
+
+/* RIGHT — chat window */
+.chat-window{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.chat-header{background:#111827;padding:14px 20px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.chat-header h3{font-size:15px;font-weight:700;}
+.chat-header p{color:#555;font-size:12px;}
+.chat-messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px;background:#0b0f1a;}
+.chat-messages::-webkit-scrollbar{width:4px;}
+.chat-messages::-webkit-scrollbar-thumb{background:rgba(0,255,255,0.2);border-radius:4px;}
+.msg-row{display:flex;gap:10px;align-items:flex-end;}
+.msg-row.admin-row{flex-direction:row-reverse;}
+.msg-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.msg-bubble{max-width:70%;padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.6;}
+.msg-bubble.student{background:#1e2a3a;color:#ddd;border-bottom-left-radius:4px;}
+.msg-bubble.admin-bot{background:linear-gradient(135deg,rgba(0,128,255,0.3),rgba(0,255,255,0.2));color:#fff;border-bottom-right-radius:4px;}
+.msg-bubble.admin-human{background:linear-gradient(135deg,#ff9800,#f44336);color:#fff;border-bottom-right-radius:4px;}
+.msg-time{font-size:10px;color:#444;margin-top:3px;}
+.chat-input-area{background:#111827;padding:14px 20px;border-top:1px solid rgba(255,255,255,0.06);display:flex;gap:10px;flex-shrink:0;}
+.chat-input-area input{flex:1;background:#0b0f1a;border:1px solid rgba(0,255,255,0.2);border-radius:10px;padding:11px 16px;color:white;font-size:13px;outline:none;transition:0.3s;}
+.chat-input-area input:focus{border-color:#00ffff;}
+.send-btn{padding:11px 20px;background:linear-gradient(135deg,#00ffff,#0080ff);border:none;border-radius:10px;color:#000;font-weight:700;cursor:pointer;font-size:14px;}
+.empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#333;gap:12px;}
+.empty-state span{font-size:48px;}
+.empty-state p{font-size:14px;}
+.no-students{padding:20px;text-align:center;color:#444;font-size:13px;}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div>
+    <h1>🎧 TCF Live Chat — Admin Panel</h1>
+    <p>Reply to student messages in real time</p>
+  </div>
+  <div style="display:flex;align-items:center;gap:16px;">
+    <span style="font-size:13px;color:#4caf50;"><span class="status-dot"></span>Admin Online</span>
+    <a href="dashboard.html" style="color:#00ffff;font-size:13px;text-decoration:none;">← Dashboard</a>
+  </div>
+</div>
+
+<div class="chat-layout">
+  <!-- Student List -->
+  <div class="student-list">
+    <h3>💬 Active Chats</h3>
+    <div id="studentList"><div class="no-students">Waiting for students...<br><br>When a student sends a message, they appear here.</div></div>
+  </div>
+
+  <!-- Chat Window -->
+  <div class="chat-window" id="chatWindow">
+    <div class="empty-state">
+      <span>💬</span>
+      <p>Select a student to start chatting</p>
+      <p style="font-size:12px;color:#333;">Students who message on your website appear on the left</p>
+    </div>
+  </div>
+</div>
+
+<script src="http://localhost:8000/socket.io/socket.io.js"></script>
+<script>
+const socket = io('http://localhost:8000');
+let activeUserId = null;
+let allChats = {}; // { userId: { userName, msgs:[] } }
+let unread = {};
+
+socket.on('connect', () => {
+  socket.emit('admin_join');
+});
+
+// Load all existing chats
+socket.on('all_chats', (students) => {
+  students.forEach(s => {
+    if(s.msgs && s.msgs.length > 0){
+      const name = s.msgs.find(m=>m.name && m.from==='student')?.name || 'Student';
+      allChats[s.userId] = { userName: name, msgs: s.msgs, currentPage: s.currentPage };
+    }
+  });
+  renderStudentList();
+});
+
+// New student comes online
+socket.on('student_online', ({ userId, userName, currentPage }) => {
+  if(!allChats[userId]) allChats[userId] = { userName, msgs: [], currentPage };
+  else allChats[userId].userName = userName;
+  allChats[userId].currentPage = currentPage;
+  renderStudentList();
+});
+
+// New message from student
+socket.on('new_student_msg', ({ userId, userName, from, name, msg, time }) => {
+  if(!allChats[userId]) allChats[userId] = { userName: userName||name||'Student', msgs: [] };
+  allChats[userId].msgs.push({ from, name, msg, time });
+  if(userId !== activeUserId){
+    unread[userId] = (unread[userId]||0) + 1;
+  }
+  renderStudentList();
+  if(userId === activeUserId) renderChatWindow(userId);
+});
+
+function renderStudentList(){
+  const el = document.getElementById('studentList');
+  const ids = Object.keys(allChats);
+  if(!ids.length){
+    el.innerHTML = '<div class="no-students">Waiting for students...<br><br>When a student sends a message, they appear here.</div>';
+    return;
+  }
+  el.innerHTML = ids.map(uid => {
+    const chat = allChats[uid];
+    const lastMsg = chat.msgs[chat.msgs.length-1];
+    const preview = lastMsg ? lastMsg.msg.substring(0,35)+'...' : 'No messages yet';
+    const badge = unread[uid] ? `<div class="unread-badge">${unread[uid]}</div>` : '';
+    const pageInfo = chat.currentPage ? `<div style="font-size:10px;color:#00ffff;margin-top:2px;">📍 ${chat.currentPage}</div>` : '';
+    return `<div class="student-item ${uid===activeUserId?'active':''}" onclick="selectStudent('${uid}')">
+      <div class="student-avatar">👤</div>
+      <div style="flex:1;min-width:0;">
+        <div class="student-name">${chat.userName}</div>
+        <div class="student-preview">${preview}</div>
+        ${pageInfo}
+      </div>
+      ${badge}
+    </div>`;
+  }).join('');
+}
+
+function selectStudent(userId){
+  activeUserId = userId;
+  unread[userId] = 0;
+  renderStudentList();
+  renderChatWindow(userId);
+}
+
+function renderChatWindow(userId){
+  const chat = allChats[userId];
+  if(!chat) return;
+  document.getElementById('chatWindow').innerHTML = `
+    <div class="chat-header">
+      <div class="msg-avatar" style="background:linear-gradient(135deg,#00ffff,#0080ff);">👤</div>
+      <div>
+        <h3>${chat.userName}</h3>
+        <p>${chat.msgs.length} messages | Currently on: <span style="color:#00ffff">${chat.currentPage || 'Unknown'}</span></p>
+      </div>
+    </div>
+    <div class="chat-messages" id="msgArea">
+      ${chat.msgs.map(m => renderMsg(m)).join('')}
+    </div>
+    <div class="chat-input-area">
+      <input id="adminInput" type="text" placeholder="Type your reply to ${chat.userName}..." onkeypress="if(event.key==='Enter')sendReply()">
+      <button class="send-btn" onclick="sendReply()">Send ➤</button>
+    </div>`;
+  const msgArea = document.getElementById('msgArea');
+  if(msgArea) msgArea.scrollTop = msgArea.scrollHeight;
+}
+
+function renderMsg(m){
+  const isAdmin = m.from === 'admin';
+  const isBot = isAdmin && m.name && m.name.includes('Bot');
+  const avatarBg = isBot ? 'linear-gradient(135deg,#0080ff,#00ffff)' : isAdmin ? 'linear-gradient(135deg,#ff9800,#f44336)' : '#1e2a3a';
+  const avatarIcon = isBot ? '🤖' : isAdmin ? '👨‍💼' : '👤';
+  const bubbleClass = isBot ? 'admin-bot' : isAdmin ? 'admin-human' : 'student';
+  return `<div class="msg-row ${isAdmin?'admin-row':''}">
+    <div class="msg-avatar" style="background:${avatarBg};">${avatarIcon}</div>
+    <div>
+      <div style="font-size:10px;color:#444;margin-bottom:3px;${isAdmin?'text-align:right':''}">${m.name||'Student'}</div>
+      <div class="msg-bubble ${bubbleClass}">${m.msg}</div>
+      <div class="msg-time" style="${isAdmin?'text-align:right':''}">${m.time||''}</div>
+    </div>
+  </div>`;
+}
+
+function sendReply(){
+  const input = document.getElementById('adminInput');
+  if(!input || !activeUserId) return;
+  const msg = input.value.trim();
+  if(!msg) return;
+  input.value = '';
+  socket.emit('admin_msg', { userId: activeUserId, msg });
+  // Add to local chat immediately
+  const data = { from:'admin', name:'👨‍💼 Support Team', msg, time: new Date().toLocaleTimeString() };
+  allChats[activeUserId].msgs.push(data);
+  renderChatWindow(activeUserId);
+}
+</script>
+</body>
+</html>

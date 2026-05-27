@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCF Institute - PRO MAX</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+scroll-behavior:smooth;
+}
+
+body{
+background:#0b0f1a;
+color:white;
+overflow-x:hidden;
+}
+
+/* HEADER */
+header{
+position:fixed;
+top:0;
+width:100%;
+padding:18px 40px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:rgba(0,0,0,0.8);
+backdrop-filter:blur(10px);
+z-index:1000;
+flex-wrap:wrap;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:12px;
+font-size:32px;
+font-weight:bold;
+color:#00ffff;
+}
+
+.logo img{
+width:50px;
+border-radius:50%;
+background:white;
+padding:5px;
+}
+
+nav{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+padding:10px 15px;
+border-radius:10px;
+transition:.3s;
+}
+
+nav a:hover{
+background:#00ffff;
+color:black;
+}
+
+/* HERO */
+.hero{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+text-align:center;
+padding:120px 20px;
+background:
+linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
+url('https://images.unsplash.com/photo-1498050108023-c5249f4df085');
+background-size:cover;
+background-position:center;
+}
+
+.hero h1{
+font-size:70px;
+margin-bottom:20px;
+animation:fadeDown 1s;
+}
+
+.hero p{
+font-size:28px;
+margin-bottom:25px;
+animation:fadeUp 1s;
+}
+
+.btn{
+padding:15px 35px;
+border:none;
+border-radius:30px;
+background:#00ffff;
+font-size:18px;
+font-weight:bold;
+cursor:pointer;
+transition:.4s;
+}
+
+.btn:hover{
+transform:translateY(-5px);
+background:white;
+box-shadow:0 10px 20px rgba(255,255,255,.2);
+}
+
+/* SECTION */
+section{
+padding:100px 50px;
+opacity:0;
+transform:translateY(40px);
+transition:1s;
+}
+
+section.show{
+opacity:1;
+transform:translateY(0);
+}
+
+.title{
+text-align:center;
+font-size:48px;
+margin-bottom:45px;
+color:#00ffff;
+}
+
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:25px;
+}
+
+.card{
+background:rgba(255,255,255,0.08);
+padding:25px;
+border-radius:18px;
+text-align:center;
+transition:.4s;
+cursor:pointer;
+}
+
+.card:hover{
+transform:translateY(-10px) scale(1.03);
+box-shadow:0 15px 25px rgba(0,255,255,.15);
+}
+
+.card img{
+width:100%;
+height:180px;
+object-fit:cover;
+border-radius:12px;
+margin-bottom:15px;
+}
+
+.card h3{
+font-size:28px;
+margin-bottom:10px;
+}
+
+.card p{
+font-size:18px;
+}
+
+/* FORM */
+.form{
+max-width:700px;
+margin:auto;
+background:rgba(255,255,255,.08);
+padding:40px;
+border-radius:20px;
+}
+
+input,select{
+width:100%;
+padding:15px;
+margin:10px 0;
+border:none;
+border-radius:10px;
+font-size:16px;
+}
+
+input:focus,select:focus{
+outline:2px solid #00ffff;
+}
+
+/* STATS */
+.stats{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:25px;
+}
+
+.stat-box{
+background:rgba(255,255,255,.08);
+padding:35px;
+border-radius:18px;
+text-align:center;
+}
+
+.stat-box h2{
+font-size:48px;
+color:#00ffff;
+}
+
+/* VIDEO */
+.video-container{
+max-width:1000px;
+margin:auto;
+border-radius:20px;
+overflow:hidden;
+box-shadow:0 15px 30px rgba(0,255,255,.15);
+}
+
+.video-container video{
+width:100%;
+display:block;
+border-radius:20px;
+}
+
+/* FOOTER */
+footer{
+background:#111;
+padding:30px;
+text-align:center;
+}
+
+.socials{
+display:flex;
+justify-content:center;
+gap:20px;
+font-size:26px;
+margin-top:15px;
+}
+
+/* ANIMATION */
+@keyframes fadeDown{
+from{opacity:0;transform:translateY(-50px);}
+to{opacity:1;transform:translateY(0);}
+}
+
+@keyframes fadeUp{
+from{opacity:0;transform:translateY(50px);}
+to{opacity:1;transform:translateY(0);}
+}
+
+/* MOBILE */
+@media(max-width:768px){
+.hero h1{font-size:40px;}
+.hero p{font-size:20px;}
+.title{font-size:34px;}
+section{padding:90px 20px;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">
+<img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+TCF Institute
+</div>
+
+<nav>
+<a href="#home">Home</a>
+<a href="#about">About</a>
+<a href="#courses">Courses</a>
+<a href="#video-section">Video</a>
+<a href="#stats">Stats</a>
+<a href="#login">Login</a>
+<a href="#contact">Contact</a>
+</nav>
+</header>
+
+<!-- HERO -->
+<section class="hero show" id="home">
+<h1>Build Your Future</h1>
+<p>Learn Today. Lead Tomorrow.</p>
+<button class="btn" onclick="location.href='#courses'">Join Now</button>
+</section>
+
+<!-- VIDEO -->
+<section id="video-section">
+<h2 class="title">Explore TCF Institute</h2>
+
+<div class="video-container">
+<video autoplay muted loop controls>
+<source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+</video>
+</div>
+
+<div class="grid" style="margin-top:40px;">
+<div class="card">
+<h3>Live Classrooms</h3>
+<p>Interactive sessions with expert trainers and real-time learning.</p>
+</div>
+
+<div class="card">
+<h3>Placement Success</h3>
+<p>Students placed in top companies through mock interviews.</p>
+</div>
+
+<div class="card">
+<h3>Modern Labs</h3>
+<p>Hands-on practice in advanced systems and labs.</p>
+</div>
+</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+<h2 class="title">About Us</h2>
+<div class="grid">
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f">
+<h3>Who We Are</h3>
+<p>Professional training center for IT careers.</p>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3">
+<h3>Why Choose Us</h3>
+<p>Live projects, experts, placement support.</p>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d">
+<h3>Our Vision</h3>
+<p>Empower students with real skills.</p>
+</div>
+
+</div>
+</section>
+
+<!-- COURSES -->
+<section id="courses">
+<h2 class="title">Courses</h2>
+
+<div class="grid">
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085">
+<h3>Web Development</h3>
+<p>₹5000</p>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4">
+<h3>Software Testing</h3>
+<p>₹4500</p>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71">
+<h3>Data Analytics</h3>
+<p>₹3000</p>
+</div>
+
+</div>
+</section>
+
+<!-- STATS -->
+<section id="stats">
+<h2 class="title">Achievements</h2>
+
+<div class="stats">
+<div class="stat-box"><h2 class="counter" data-target="1500">0</h2><p>Students</p></div>
+<div class="stat-box"><h2 class="counter" data-target="350">0</h2><p>Placed</p></div>
+<div class="stat-box"><h2 class="counter" data-target="25">0</h2><p>Courses</p></div>
+<div class="stat-box"><h2 class="counter" data-target="10">0</h2><p>Years</p></div>
+</div>
+</section>
+
+<!-- LOGIN -->
+<section id="login">
+<h2 class="title">Student Login</h2>
+
+<div class="form">
+<input type="text" id="user" placeholder="Username">
+<input type="password" id="pass" placeholder="Password">
+<button class="btn" onclick="login()">Login</button>
+</div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+<h2 class="title">Contact</h2>
+
+<div class="form">
+<p>📞 +91 9876543210</p><br>
+<p>✉ tcftechnologies@gmail.com</p><br>
+<p>📍 Chennai</p>
+</div>
+</section>
+
+<footer>
+<p>© 2026 TCF Institute</p>
+<div class="socials">
+<span>🌐</span>
+<span>📘</span>
+<span>📸</span>
+<span>▶</span>
+</div>
+</footer>
+
+<script>
+function login(){
+let u=document.getElementById("user").value;
+let p=document.getElementById("pass").value;
+
+if(u=="admin" && p=="1234"){
+alert("Login Successful");
+}else{
+alert("Invalid Username or Password");
+}
+}
+
+window.addEventListener("scroll",()=>{
+document.querySelectorAll("section").forEach(sec=>{
+let top=sec.getBoundingClientRect().top;
+if(top<window.innerHeight-100){
+sec.classList.add("show");
+}
+});
+});
+
+const counters=document.querySelectorAll(".counter");
+let started=false;
+
+function runCounter(){
+counters.forEach(counter=>{
+let target=+counter.getAttribute("data-target");
+let count=0;
+let speed=target/100;
+
+function update(){
+count+=speed;
+if(count<target){
+counter.innerText=Math.floor(count);
+requestAnimationFrame(update);
+}else{
+counter.innerText=target;
+}
+}
+update();
+});
+}
+
+window.addEventListener("scroll",()=>{
+let stats=document.getElementById("stats").getBoundingClientRect().top;
+if(stats<window.innerHeight-100 && !started){
+runCounter();
+started=true;
+}
+});
+</script>
+
+</body>
+</html>

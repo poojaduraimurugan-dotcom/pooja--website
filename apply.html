@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCF Institute</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+scroll-behavior:smooth;
+}
+
+body{
+background:#0b0f1a;
+color:white;
+overflow-x:hidden;
+}
+
+header{
+position:fixed;
+top:0;
+width:100%;
+padding:18px 40px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:rgba(0,0,0,0.8);
+backdrop-filter:blur(10px);
+z-index:1000;
+flex-wrap:wrap;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:12px;
+font-size:34px;
+font-weight:bold;
+color:#00ffff;
+}
+
+.logo img{
+width:55px;
+height:55px;
+border-radius:50%;
+background:white;
+padding:6px;
+}
+
+nav{
+display:flex;
+flex-wrap:wrap;
+gap:8px;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+padding:8px 14px;
+border-radius:8px;
+transition:0.3s;
+font-size:17px;
+}
+
+nav a:hover{
+background:#00ffff;
+color:black;
+}
+
+.hero{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+text-align:center;
+padding:120px 20px;
+background:
+linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
+url('https://images.unsplash.com/photo-1498050108023-c5249f4df085');
+background-size:cover;
+background-position:center;
+}
+
+.hero h1{
+font-size:68px;
+margin-bottom:20px;
+}
+
+.hero p{
+font-size:28px;
+margin-bottom:25px;
+}
+
+.btn{
+padding:15px 34px;
+border:none;
+border-radius:30px;
+background:#00ffff;
+font-size:18px;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
+}
+
+.btn:hover{
+transform:translateY(-4px);
+background:white;
+color:black;
+box-shadow:0 10px 20px rgba(255,255,255,0.15);
+}
+
+section{
+padding:100px 50px;
+opacity:0;
+transform:translateY(40px);
+transition:1s;
+}
+
+section.show{
+opacity:1;
+transform:translateY(0);
+}
+
+.title{
+text-align:center;
+font-size:48px;
+margin-bottom:45px;
+color:#00ffff;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:28px;
+}
+
+.card{
+background:rgba(255,255,255,0.08);
+padding:25px;
+border-radius:18px;
+text-align:center;
+transition:0.4s;
+cursor:pointer;
+}
+
+.card:hover{
+transform:translateY(-10px) scale(1.02);
+box-shadow:0 15px 25px rgba(0,255,255,.12);
+}
+
+.card img{
+width:100%;
+height:170px;
+object-fit:cover;
+border-radius:12px;
+margin-bottom:15px;
+}
+
+.card h3{
+font-size:28px;
+margin-bottom:10px;
+}
+
+.card p{
+font-size:18px;
+}
+
+.form{
+max-width:700px;
+margin:auto;
+background:rgba(255,255,255,0.08);
+padding:40px;
+border-radius:18px;
+}
+
+input,select{
+width:100%;
+padding:16px;
+margin:10px 0;
+border:none;
+border-radius:10px;
+font-size:17px;
+outline:none;
+transition:0.3s;
+}
+
+input:focus,select:focus{
+box-shadow:0 0 0 3px rgba(0,255,255,.2);
+}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:25px;
+margin-top:40px;
+}
+
+.stat-box{
+background:rgba(255,255,255,0.08);
+padding:35px;
+border-radius:18px;
+text-align:center;
+}
+
+.stat-box h2{
+font-size:48px;
+color:#00ffff;
+margin-bottom:10px;
+}
+
+.stat-box p{
+font-size:20px;
+}
+
+footer{
+background:#111;
+padding:35px 20px;
+text-align:center;
+}
+
+.socials{
+margin-top:15px;
+display:flex;
+justify-content:center;
+gap:18px;
+font-size:26px;
+}
+
+.popup{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.85);
+z-index:2000;
+padding:40px 20px;
+overflow:auto;
+}
+
+.popup-content{
+background:#111;
+padding:30px;
+border-radius:18px;
+max-width:800px;
+margin:auto;
+text-align:center;
+animation:fade 0.5s;
+}
+
+.popup img{
+width:100%;
+max-height:260px;
+object-fit:cover;
+border-radius:15px;
+margin:15px 0;
+}
+
+.close{
+float:right;
+font-size:30px;
+cursor:pointer;
+color:red;
+}
+
+@keyframes fade{
+from{opacity:0;transform:translateY(40px);}
+to{opacity:1;transform:translateY(0);}
+}
+
+@media(max-width:768px){
+header{padding:15px;justify-content:center;}
+.logo{font-size:26px;}
+.hero h1{font-size:40px;}
+.hero p{font-size:20px;}
+section{padding:90px 20px;}
+.title{font-size:34px;}
+.btn{width:100%;max-width:260px;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">
+<img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+TCF Institute
+</div>
+
+<nav>
+<a href="#home">Home</a>
+<a href="#about">About</a>
+<a href="#courses">Courses</a>
+<a href="#placements">Placements</a>
+<a href="#stats">Stats</a>
+<a href="#login">Login</a>
+<a href="#dashboard">Dashboard
+<a href="#signup">Signup</a>
+<a href="#contact">Contact</a>
+<a href="dashboard.html">Dashboard</a>
+</nav>
+</header>
+
+<section class="hero show" id="home">
+<h1>Build Your Future</h1>
+<p>Learn Today. Lead Tomorrow.</p>
+<button class="btn" onclick="location.href='#courses'">Join Now</button>
+</section>
+
+<section id="about">
+<h2 class="title">About TCF Institute</h2>
+
+<div class="grid">
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f">
+<h3>Who We Are</h3>
+<p>TCF Institute is a professional technology training center helping students build practical IT skills in development, testing, analytics and placements.</p>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3">
+<h3>Why Choose Us</h3>
+<p>We provide live projects, expert trainers, interview preparation, resume building and placement support for real career growth.</p>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d">
+<h3>Our Vision</h3>
+<p>Our vision is to empower every student with technical knowledge, communication skills and confidence to join top companies.</p>
+</div>
+
+</div>
+</section>
+
+<section id="courses">
+<h2 class="title">Our Courses</h2>
+
+<div class="grid">
+
+<div class="card" onclick="coursePage('Web Development')">
+<img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085">
+<h3>Web Development</h3>
+<p>₹5000</p>
+</div>
+
+<div class="card" onclick="coursePage('Software Testing')">
+<img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4">
+<h3>Software Testing</h3>
+<p>₹4500</p>
+</div>
+
+<div class="card" onclick="coursePage('Data Analytics')">
+<img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71">
+<h3>Data Analytics</h3>
+<p>₹3000</p>
+</div>
+
+</div>
+</section>
+
+<section id="placements">
+<h2 class="title">Placements</h2>
+
+<div class="grid">
+
+<div class="card" onclick="showCompany('TCS')">
+<img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Tata_Consultancy_Services_Logo.svg">
+<h3>TCS</h3>
+<p>25 Students Placed</p>
+</div>
+
+<div class="card" onclick="showCompany('Infosys')">
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Infosys_logo.svg">
+<h3>Infosys</h3>
+<p>18 Students Placed</p>
+</div>
+
+<div class="card" onclick="showCompany('Wipro')">
+<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Wipro_Primary_Logo_Color_RGB.svg">
+<h3>Wipro</h3>
+<p>15 Students Placed</p>
+</div>
+
+</div>
+</section>
+
+<section id="stats">
+<h2 class="title">Our Achievements</h2>
+
+<div class="stats">
+
+<div class="stat-box">
+<h2 class="counter" data-target="1500">0</h2>
+<p>Students Trained</p>
+</div>
+
+<div class="stat-box">
+<h2 class="counter" data-target="350">0</h2>
+<p>Students Placed</p>
+</div>
+
+<div class="stat-box">
+<h2 class="counter" data-target="25">0</h2>
+<p>Courses Offered</p>
+</div>
+
+<div class="stat-box">
+<h2 class="counter" data-target="10">0</h2>
+<p>Years Experience</p>
+</div>
+
+</div>
+</section>
+
+<section id="login">
+<h2 class="title">Student Login</h2>
+
+<div class="form">
+<input type="email" id="user" placeholder="Email">
+<input type="password" id="pass" placeholder="Password">
+<button class="btn" onclick="login()">Login</button>
+</div>
+</section>
+
+<section id="dashboard">
+<h2 class="title">Dashboard</h2>
+
+<div class="grid">
+<div class="card"><h3>My Course</h3><p>Web Development</p></div>
+<div class="card"><h3>Attendance</h3><p>95%</p></div>
+<div class="card"><h3>Status</h3><p>Active</p></div>
+</div>
+</section>
+
+<section id="signup">
+<h2 class="title">Create Account</h2>
+
+<div class="form">
+<input type="text" placeholder="Full Name">
+<input type="email" placeholder="Email">
+<input type="text" placeholder="Phone">
+<input type="password" placeholder="Password">
+<button class="btn" onclick="register()">Register</button>
+</div>
+</section>
+
+<section id="contact">
+<h2 class="title">Contact</h2>
+<div class="form">
+<p>📞 +91 9876543210</p><br>
+<p>✉ tcftechnologies@gmail.com</p><br>
+<p>📍 Chennai</p>
+</div>
+</section>
+
+<footer>
+<p>© 2026 TCF Institute</p>
+<div class="socials">
+<span>🌐</span>
+<span>📘</span>
+<span>📸</span>
+<span>▶</span>
+</div>
+</footer>
+
+<div class="popup" id="popup">
+<div class="popup-content">
+<span class="close" onclick="closePopup()">✖</span>
+<div id="popupData"></div>
+</div>
+</div>
+
+<script>
+const API = 'http://localhost:8000/api';
+let loggedIn = false;
+let currentUser = null;
+
+// LOGIN
+async function login(){
+  const email = document.getElementById('user').value;
+  const password = document.getElementById('pass').value;
+  if(!email || !password) return alert('Enter email and password');
+
+  const res = await fetch(`${API}/auth/login`, {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({email, password})
+  });
+  const data = await res.json();
+  if(data.success){
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('userId', data.id);
+    loggedIn = true;
+    currentUser = data;
+    alert('Login Successful! Welcome ' + data.name);
+    loadDashboard(data.id);
+    location.href='#dashboard';
+  } else {
+    alert(data.message);
+  }
+}
+
+// SIGNUP
+async function register(){
+  const full_name = document.querySelector('#signup input:nth-child(1)').value;
+  const email = document.querySelector('#signup input:nth-child(2)').value;
+  const phone = document.querySelector('#signup input:nth-child(3)').value;
+  const password = document.querySelector('#signup input:nth-child(4)').value;
+  if(!full_name||!email||!phone||!password) return alert('Fill all fields');
+
+  const res = await fetch(`${API}/auth/signup`, {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({full_name, email, phone, password})
+  });
+  const data = await res.json();
+  alert(data.message);
+  if(data.success) location.href='#login';
+}
+
+// LOAD DASHBOARD
+async function loadDashboard(userId){
+  const res = await fetch(`${API}/dashboard/${userId}`);
+  const data = await res.json();
+  if(data.success && data.data.length > 0){
+    const d = data.data[0];
+    document.querySelector('#dashboard .grid').innerHTML = `
+      <div class="card"><h3>My Course</h3><p>${d.course_name}</p></div>
+      <div class="card"><h3>Attendance</h3><p>${d.attendance}%</p></div>
+      <div class="card"><h3>Status</h3><p>${d.status}</p></div>
+    `;
+  }
+}
+
+// COURSE POPUP
+function coursePage(name){
+  document.getElementById('popupData').innerHTML=`
+    <h2 style="color:#00ffff;">${name}</h2>
+    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3">
+    <p>${name} course gives practical training, projects, interview preparation, certification guidance and placement support.</p>
+    <br>
+    <button class="btn" onclick="applyNow('${name}')">Apply Now</button>
+  `;
+  document.getElementById('popup').style.display='block';
+}
+
+// APPLY NOW
+function applyNow(course){
+  if(!loggedIn){ alert('Please Login First'); location.href='#login'; return; }
+  document.getElementById('popupData').innerHTML=`
+    <h2 style="color:#00ffff;">${course} Application</h2>
+    <input id="applyName" type="text" placeholder="Full Name">
+    <input id="applyEmail" type="email" placeholder="Email ID">
+    <input id="applyPhone" type="text" placeholder="Phone Number">
+    <input id="applyQual" type="text" placeholder="Qualification">
+    <button class="btn" onclick="submitForm('${course}')">Submit Application</button>
+  `;
+}
+
+// SUBMIT APPLICATION
+async function submitForm(course){
+  const full_name = document.getElementById('applyName').value;
+  const email = document.getElementById('applyEmail').value;
+  const phone = document.getElementById('applyPhone').value;
+  const qualification = document.getElementById('applyQual').value;
+  if(!full_name||!email||!phone||!qualification) return alert('Fill all fields');
+
+  const userId = localStorage.getItem('userId');
+  const res = await fetch(`${API}/applications/apply`, {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({user_id: userId, course_id:1, full_name, email, phone, qualification})
+  });
+  const data = await res.json();
+  
+  // Show custom popup
+  document.getElementById('popupData').innerHTML = `
+    <h2 style="color:#00ffff;">Application Submitted!</h2>
+    <p>${data.message}</p>
+    <br>
+    <button class="btn" onclick="closePopup()">Close</button>
+  `;
+  document.getElementById('popup').style.display = 'block';
+}
+
+// COMPANY POPUP
+function showCompany(name){
+  document.getElementById('popupData').innerHTML=`
+    <h2 style="color:#00ffff;">${name} Placement Details</h2>
+    <img src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a">
+    <p>${name} hires students for software, testing and support roles. Students receive training, mock interviews and placement preparation.</p>
+  `;
+  document.getElementById('popup').style.display='block';
+}
+
+function closePopup(){
+  document.getElementById('popup').style.display='none';
+}
+
+// Check login on page load
+window.addEventListener('load', ()=>{
+  const token = localStorage.getItem('token');
+  const userId = localStorage.getItem('userId');
+  if(token && userId){
+    loggedIn = true;
+    loadDashboard(userId);
+  }
+});
+
+window.addEventListener('scroll',()=>{
+  document.querySelectorAll('section').forEach(sec=>{
+    if(sec.getBoundingClientRect().top < window.innerHeight-100)
+      sec.classList.add('show');
+  });
+});
+
+const counters = document.querySelectorAll('.counter');
+function runCounter(){
+  counters.forEach(counter=>{
+    let target=+counter.getAttribute('data-target'), count=0, speed=target/100;
+    let update=()=>{ count+=speed; if(count<target){counter.innerText=Math.floor(count);requestAnimationFrame(update);}else{counter.innerText=target;} }
+    update();
+  });
+}
+let started=false;
+window.addEventListener('scroll',()=>{
+  if(document.getElementById('stats').getBoundingClientRect().top<window.innerHeight-100 && !started){
+    runCounter(); started=true;
+  }
+});
+</script>
+
+</body>
+</html>

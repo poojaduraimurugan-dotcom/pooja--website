@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCF Institute - Login & Signup</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif;}
+body{background:#0b0f1a;color:white;min-height:100vh;display:flex;flex-direction:column;}
+header{padding:15px 50px;display:flex;justify-content:space-between;align-items:center;background:rgba(11,15,26,0.95);border-bottom:1px solid rgba(0,255,255,0.1);}
+.logo{display:flex;align-items:center;gap:12px;font-size:22px;font-weight:bold;color:#00ffff;}
+.logo img{width:42px;height:42px;border-radius:50%;}
+.main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px;}
+.auth-box{width:100%;max-width:470px;}
+.auth-tabs{display:flex;background:rgba(255,255,255,0.05);border-radius:12px;padding:5px;margin-bottom:28px;}
+.auth-tab{flex:1;padding:12px;text-align:center;border-radius:8px;cursor:pointer;font-size:15px;font-weight:600;color:#aaa;transition:0.3s;border:none;background:none;}
+.auth-tab.active{background:#00ffff;color:#0b0f1a;}
+.auth-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:38px;}
+.auth-card h2{font-size:26px;font-weight:800;margin-bottom:6px;}
+.auth-card .subtitle{color:#aaa;font-size:14px;margin-bottom:28px;}
+.form-group{margin-bottom:16px;position:relative;}
+.form-group label{display:block;color:#aaa;font-size:13px;font-weight:600;margin-bottom:7px;letter-spacing:0.3px;}
+.input-wrap{position:relative;}
+.input-wrap .icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none;}
+.form-group input{width:100%;padding:13px 16px 13px 42px;background:rgba(255,255,255,0.05);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;color:white;font-size:14px;outline:none;transition:0.3s;}
+.form-group input:focus{border-color:#00ffff;background:rgba(0,255,255,0.04);box-shadow:0 0 0 3px rgba(0,255,255,0.08);}
+.form-group input.error{border-color:#f44336;background:rgba(244,67,54,0.04);}
+.captcha-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.captcha-box{padding:12px 16px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:12px;letter-spacing:4px;font-weight:700;color:#fff;}
+.captcha-refresh{background:transparent;border:1px solid rgba(255,255,255,0.18);color:#cdeaff;border-radius:12px;padding:10px 14px;cursor:pointer;transition:0.2s;}
+.captcha-refresh:hover{background:rgba(255,255,255,0.1);}
+.form-group input.success{border-color:#4caf50;}
+.toggle-pass{position:absolute;right:14px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:16px;color:#666;user-select:none;}
+.err-msg{color:#f44336;font-size:12px;margin-top:5px;display:none;align-items:center;gap:4px;}
+.err-msg.show{display:flex;}
+.strength-bar{height:4px;border-radius:4px;margin-top:6px;background:rgba(255,255,255,0.05);overflow:hidden;}
+.strength-fill{height:100%;border-radius:4px;transition:0.4s;width:0;}
+.strength-text{font-size:11px;margin-top:4px;font-weight:600;}
+.btn{width:100%;padding:14px;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;transition:0.3s;background:linear-gradient(135deg,#00ffff,#0080ff);color:#0b0f1a;margin-top:6px;letter-spacing:0.3px;}
+.btn:hover{opacity:0.88;transform:translateY(-2px);}
+.btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+.btn-google{width:100%;padding:13px 16px;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;color:white;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:0.3s;margin-top:6px;}
+.btn-google:hover{background:rgba(255,255,255,0.11);border-color:rgba(255,255,255,0.28);transform:translateY(-2px);}
+.form-section{display:none;}
+.form-section.active{display:block;}
+.divider{text-align:center;color:#444;font-size:13px;margin:18px 0;position:relative;}
+.divider::before,.divider::after{content:'';position:absolute;top:50%;width:42%;height:1px;background:rgba(255,255,255,0.07);}
+.divider::before{left:0;} .divider::after{right:0;}
+.switch-link{text-align:center;margin-top:18px;color:#aaa;font-size:14px;}
+.switch-link span{color:#00ffff;cursor:pointer;font-weight:600;}
+.switch-link span:hover{text-decoration:underline;}
+.toast{position:fixed;top:20px;right:20px;padding:14px 20px;border-radius:10px;font-size:14px;font-weight:600;z-index:9999;transform:translateX(120%);transition:0.4s;max-width:320px;}
+.toast.show{transform:translateX(0);}
+.toast.success{background:#1a3a1a;border:1px solid #4caf50;color:#4caf50;}
+.toast.error{background:#3a1a1a;border:1px solid #f44336;color:#f44336;}
+.phone-hint{font-size:11px;color:#555;margin-top:4px;}
+footer{background:#060810;border-top:1px solid rgba(255,255,255,0.05);padding:18px 50px;text-align:center;color:#555;font-size:13px;}
+/* Particles */
+#particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden;}
+.particle{position:absolute;border-radius:50%;background:rgba(0,255,255,0.15);animation:floatUp linear infinite;}
+@keyframes floatUp{0%{transform:translateY(100vh) scale(0);opacity:0;}10%{opacity:1;}90%{opacity:0.5;}100%{transform:translateY(-100px) scale(1);opacity:0;}}
+.main{position:relative;z-index:1;flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px;}
+header{position:relative;z-index:2;}
+header{position:relative;z-index:2;}
+</style>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+<div id="particles"></div>
+<header>
+  <div class="logo"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">TCF Institute</div>
+  <div style="display:flex; gap:20px; align-items:center;">
+    <a href="mock-assessment.html" style="color:#00ffff;text-decoration:none;font-size:14px;font-weight:600;">📝 Mock Assessment</a>
+    <a href="index.html" style="color:#aaa;text-decoration:none;font-size:14px;">← Back to Home</a>
+  </div>
+</header>
+
+<div class="main">
+  <div class="auth-box">
+  <div class="auth-tabs">
+    <button class="auth-tab active" onclick="switchTab('login',this)">🔑 Login</button>
+    <button class="auth-tab" onclick="switchTab('otp',this)">📱 OTP Login</button>
+    <button class="auth-tab" onclick="switchTab('signup',this)">🚀 Sign Up</button>
+  </div>
+
+  <div class="auth-card">
+    <!-- LOGIN -->
+    <div id="loginForm" class="form-section active">
+      <h2>Welcome Back! 👋</h2>
+      <p class="subtitle">Login to access your dashboard and courses</p>
+
+      <div class="form-group">
+        <label>Email Address</label>
+        <div class="input-wrap">
+          <span class="icon">📧</span>
+          <input type="email" id="loginEmail" placeholder="Enter your email" oninput="clearErr('loginEmailErr')">
+        </div>
+        <div class="err-msg" id="loginEmailErr">⚠ Please enter a valid email</div>
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <div class="input-wrap">
+          <span class="icon">🔒</span>
+          <input type="password" id="loginPass" placeholder="Enter your password" oninput="clearErr('loginPassErr')" onkeydown="if(event.key==='Enter')login()">
+          <span class="toggle-pass" onclick="togglePass('loginPass',this)">👁</span>
+        </div>
+        <div class="err-msg" id="loginPassErr">⚠ Password is required</div>
+      </div>
+
+      <div class="form-group captcha-group">
+        <label>Captcha</label>
+        <div class="captcha-row">
+          <div class="captcha-box" id="captchaCode">ABCDE</div>
+          <button type="button" class="captcha-refresh" onclick="generateCaptcha()">↻ Refresh</button>
+        </div>
+        <div class="input-wrap">
+          <span class="icon">🧩</span>
+          <input type="text" id="loginCaptcha" placeholder="Enter captcha" oninput="clearErr('loginCaptchaErr')" onkeydown="if(event.key==='Enter')login()">
+        </div>
+        <div class="err-msg" id="loginCaptchaErr">⚠ Captcha does not match</div>
+      </div>
+
+      <button class="btn" id="loginBtn" onclick="login()">Login →</button>
+      <div class="switch-link" style="margin-top:12px;">Forgot password? <span onclick="switchTab('reset',null)">Reset Password</span></div>
+      <div class="divider">or continue with</div>
+      <button class="btn-google" onclick="signInWithGoogle()"><svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z"/><path fill="#FBBC05" d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707s.102-1.167.282-1.707V4.961H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.039l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.961L3.964 6.293C4.672 4.166 6.656 3.58 9 3.58z"/></svg>Sign in with Google</button>
+      <div class="switch-link">Don't have an account? <span onclick="switchTab('signup',null)">Sign Up</span></div>
+    </div>
+
+    <!-- OTP LOGIN -->
+    <div id="otpForm" class="form-section">
+      <h2>OTP Login 📱</h2>
+      <p class="subtitle">Enter your phone number to receive OTP on your email</p>
+
+      <div id="otpStep1">
+        <div class="form-group">
+          <label>Phone Number</label>
+          <div class="input-wrap">
+            <span class="icon">📱</span>
+            <input type="tel" id="otpPhone" placeholder="Enter your 10-digit phone number" maxlength="10" onkeypress="return onlyDigits(event)">
+          </div>
+          <div class="err-msg" id="otpPhoneErr">⚠ Enter valid 10-digit phone number</div>
+        </div>
+        <button class="btn" id="sendOtpBtn" onclick="sendOTP()">Send OTP 🚀</button>
+      </div>
+
+      <div id="otpStep2" style="display:none;">
+        <div style="background:rgba(0,255,255,0.06);border:1px solid rgba(0,255,255,0.2);border-radius:10px;padding:14px;margin-bottom:18px;text-align:center;">
+          <p style="color:#00ffff;font-weight:700;font-size:14px;">📧 OTP sent to your registered email!</p>
+          <p id="otpEmailHint" style="color:#aaa;font-size:12px;margin-top:4px;">Check your inbox</p>
+          <p style="color:#ff9800;font-size:12px;margin-top:4px;">⏱️ Valid for 5 minutes</p>
+        </div>
+        <div class="form-group">
+          <label>Enter 6-digit OTP</label>
+          <div class="input-wrap">
+            <span class="icon">🔐</span>
+            <input type="text" id="otpCode" placeholder="Enter OTP" maxlength="6" style="letter-spacing:8px;font-size:20px;font-weight:700;text-align:center;" onkeypress="return onlyDigits(event)" onkeydown="if(event.key==='Enter')verifyOTP()">
+          </div>
+          <div class="err-msg" id="otpCodeErr">⚠ Enter valid 6-digit OTP</div>
+        </div>
+        <button class="btn" id="verifyOtpBtn" onclick="verifyOTP()">Verify OTP ✅</button>
+        <div style="text-align:center;margin-top:12px;">
+          <span style="color:#aaa;font-size:13px;">Didn't receive? </span>
+          <span onclick="resendOTP()" style="color:#00ffff;cursor:pointer;font-size:13px;font-weight:600;">Resend OTP</span>
+        </div>
+      </div>
+
+      <div class="switch-link">Have password? <span onclick="switchTab('login',null)">Login with Password</span></div>
+    </div>
+
+    <div id="resetForm" class="form-section">
+      <h2>Reset Password 🔐</h2>
+      <p class="subtitle">Enter your registered email and reset code to create a new password.</p>
+
+      <div class="form-group">
+        <label>Email Address</label>
+        <div class="input-wrap">
+          <span class="icon">📧</span>
+          <input type="email" id="resetEmail" placeholder="Enter your registered email" oninput="clearErr('resetEmailErr')">
+        </div>
+        <div class="err-msg" id="resetEmailErr">⚠ Please enter a valid email address</div>
+      </div>
+
+      <div class="form-group">
+        <button class="btn" id="sendResetBtn" onclick="sendResetCode()">Send Reset Code</button>
+      </div>
+
+      <div class="form-group">
+        <label>Reset Code</label>
+        <div class="input-wrap">
+          <span class="icon">🔐</span>
+          <input type="text" id="resetCode" placeholder="Enter code from email" oninput="clearErr('resetCodeErr')">
+        </div>
+        <div class="err-msg" id="resetCodeErr">⚠ Reset code is required</div>
+      </div>
+
+      <div class="form-group">
+        <label>New Password</label>
+        <div class="input-wrap">
+          <span class="icon">🔒</span>
+          <input type="password" id="resetPass" placeholder="Enter new password" oninput="clearErr('resetPassErr')">
+          <span class="toggle-pass" onclick="togglePass('resetPass',this)">👁</span>
+        </div>
+        <div class="err-msg" id="resetPassErr">⚠ Password must be at least 6 characters</div>
+      </div>
+
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <div class="input-wrap">
+          <span class="icon">🔐</span>
+          <input type="password" id="resetConfirm" placeholder="Confirm new password" oninput="clearErr('resetConfirmErr')">
+          <span class="toggle-pass" onclick="togglePass('resetConfirm',this)">👁</span>
+        </div>
+        <div class="err-msg" id="resetConfirmErr">⚠ Passwords do not match</div>
+      </div>
+
+      <button class="btn" id="resetBtn" onclick="resetPassword()">Reset Password</button>
+      <div class="switch-link">Remembered your password? <span onclick="switchTab('login',null)">Login</span></div>
+    </div>
+
+    <!-- SIGNUP -->
+    <div id="signupForm" class="form-section">
+      <h2>Create Account 🚀</h2>
+      <p class="subtitle">Join TCF Institute and start your learning journey</p>
+
+      <div class="form-group">
+        <label>Full Name</label>
+        <div class="input-wrap">
+          <span class="icon">👤</span>
+          <input type="text" id="signupName" placeholder="Enter your full name" oninput="validateName()">
+        </div>
+        <div class="err-msg" id="nameErr">⚠ Name must be at least 2 characters</div>
+      </div>
+
+      <div class="form-group">
+        <label>Email Address</label>
+        <div class="input-wrap">
+          <span class="icon">📧</span>
+          <input type="email" id="signupEmail" placeholder="Enter your email" oninput="validateEmail()">
+        </div>
+        <div class="err-msg" id="emailErr">⚠ Please enter a valid email address</div>
+      </div>
+
+      <div class="form-group">
+        <label>Phone Number</label>
+        <div class="input-wrap">
+          <span class="icon">📱</span>
+          <input type="tel" id="signupPhone" placeholder="Enter 10-digit phone number" maxlength="10" oninput="validatePhone(this)" onkeypress="return onlyDigits(event)">
+        </div>
+        <div class="err-msg" id="phoneErr">⚠ Enter a valid 10-digit phone number</div>
+        <div class="phone-hint">Only numbers allowed • 10 digits required</div>
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <div class="input-wrap">
+          <span class="icon">🔒</span>
+          <input type="password" id="signupPass" placeholder="Create a strong password" oninput="validatePass()">
+          <span class="toggle-pass" onclick="togglePass('signupPass',this)">👁</span>
+        </div>
+        <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+        <div class="strength-text" id="strengthText"></div>
+        <div class="err-msg" id="passErr">⚠ Password must be at least 6 characters</div>
+      </div>
+
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <div class="input-wrap">
+          <span class="icon">🔐</span>
+          <input type="password" id="signupConfirm" placeholder="Re-enter your password" oninput="validateConfirm()">
+          <span class="toggle-pass" onclick="togglePass('signupConfirm',this)">👁</span>
+        </div>
+        <div class="err-msg" id="confirmErr">⚠ Passwords do not match</div>
+      </div>
+
+      <button class="btn" id="signupBtn" onclick="signup()">Create Account 🚀</button>
+      <div class="divider">or sign up with</div>
+      <button class="btn-google" onclick="signInWithGoogle()"><svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z"/><path fill="#FBBC05" d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707s.102-1.167.282-1.707V4.961H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.039l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.961L3.964 6.293C4.672 4.166 6.656 3.58 9 3.58z"/></svg>Sign up with Google</button>
+      <div class="switch-link">Already have an account? <span onclick="switchTab('login',null)">Login</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+<footer><p>© 2026 TCF Institute. All rights reserved.</p></footer>
+
+<script>
+const API = 'http://localhost:8000/api';
+
+/* ---- TAB SWITCH ---- */
+function switchTab(tab, btn){
+  document.querySelectorAll('.auth-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.form-section').forEach(f=>f.classList.remove('active'));
+  document.getElementById(tab+'Form').classList.add('active');
+  if(btn) btn.classList.add('active');
+  else{
+    const tabs = {'login':0,'otp':1,'signup':2};
+    if(typeof tabs[tab] !== 'undefined') document.querySelectorAll('.auth-tab')[tabs[tab]].classList.add('active');
+  }
+}
+
+/* ---- TOAST ---- */
+function showToast(msg, type='success'){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  setTimeout(()=>t.classList.remove('show'), 3500);
+}
+
+/* ---- TOGGLE PASSWORD ---- */
+function togglePass(id, el){
+  const inp = document.getElementById(id);
+  inp.type = inp.type==='password' ? 'text' : 'password';
+  el.textContent = inp.type==='password' ? '👁' : '🙈';
+}
+
+/* ---- ONLY DIGITS FOR PHONE ---- */
+function onlyDigits(e){
+  const char = String.fromCharCode(e.which);
+  if(!/[0-9]/.test(char)){ e.preventDefault(); return false; }
+  return true;
+}
+
+/* ---- VALIDATIONS ---- */
+function clearErr(id){ document.getElementById(id).classList.remove('show'); }
+
+function setErr(id, show){
+  const el = document.getElementById(id);
+  el.classList.toggle('show', show);
+  return show;
+}
+
+function validateName(){
+  const v = document.getElementById('signupName').value.trim();
+  const bad = v.length < 2;
+  document.getElementById('signupName').className = v.length===0?'': bad?'error':'success';
+  return !setErr('nameErr', v.length>0 && bad);
+}
+
+function validateEmail(){
+  const v = document.getElementById('signupEmail').value.trim();
+  const bad = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  document.getElementById('signupEmail').className = v.length===0?'': bad?'error':'success';
+  return !setErr('emailErr', v.length>0 && bad);
+}
+
+function validatePhone(inp){
+  // Strip any non-digit characters that might be pasted
+  inp.value = inp.value.replace(/[^0-9]/g,'');
+  const v = inp.value;
+  const bad = v.length > 0 && (v.length !== 10 || !/^[6-9][0-9]{9}$/.test(v));
+  inp.className = v.length===0?'': bad?'error':'success';
+  return !setErr('phoneErr', bad);
+}
+
+function validatePass(){
+  const v = document.getElementById('signupPass').value;
+  const fill = document.getElementById('strengthFill');
+  const text = document.getElementById('strengthText');
+  let strength = 0;
+  if(v.length>=6) strength++;
+  if(v.length>=8) strength++;
+  if(/[A-Z]/.test(v)) strength++;
+  if(/[0-9]/.test(v)) strength++;
+  if(/[^A-Za-z0-9]/.test(v)) strength++;
+  const levels = [{w:'0%',c:'',l:''},{w:'25%',c:'#f44336',l:'Weak'},{w:'50%',c:'#ff9800',l:'Fair'},{w:'75%',c:'#2196f3',l:'Good'},{w:'100%',c:'#4caf50',l:'Strong'},{w:'100%',c:'#4caf50',l:'Very Strong'}];
+  const s = levels[strength]||levels[0];
+  fill.style.width=s.w; fill.style.background=s.c;
+  text.textContent=s.l; text.style.color=s.c;
+  document.getElementById('signupPass').className = v.length===0?'': v.length<6?'error':'success';
+  setErr('passErr', v.length>0 && v.length<6);
+  if(document.getElementById('signupConfirm').value) validateConfirm();
+  return v.length>=6;
+}
+
+function validateConfirm(){
+  const p = document.getElementById('signupPass').value;
+  const c = document.getElementById('signupConfirm').value;
+  const bad = c.length>0 && p!==c;
+  document.getElementById('signupConfirm').className = c.length===0?'': bad?'error':'success';
+  return !setErr('confirmErr', bad);
+}
+
+/* ---- OTP LOGIN ---- */
+let otpPhone = '';
+
+async function sendOTP(){
+  const phone = document.getElementById('otpPhone').value.trim();
+  if(phone.length !== 10 || !/^[6-9][0-9]{9}$/.test(phone)){
+    setErr('otpPhoneErr', true); return;
+  }
+  setErr('otpPhoneErr', false);
+  otpPhone = phone;
+  const btn = document.getElementById('sendOtpBtn');
+  btn.disabled = true; btn.textContent = 'Sending...';
+  const res = await fetch(`${API}/auth/send-otp`, {
+    method: 'POST', headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ phone })
+  }).then(r=>r.json());
+  btn.disabled = false; btn.textContent = 'Send OTP 🚀';
+  if(res.success){
+    showToast('📧 ' + res.message);
+    document.getElementById('otpEmailHint').textContent = res.message;
+    document.getElementById('otpStep1').style.display = 'none';
+    document.getElementById('otpStep2').style.display = 'block';
+    document.getElementById('otpCode').focus();
+  } else {
+    showToast('❌ ' + res.message, 'error');
+  }
+}
+
+async function verifyOTP(){
+  const otp = document.getElementById('otpCode').value.trim();
+  if(otp.length !== 6){ setErr('otpCodeErr', true); return; }
+  setErr('otpCodeErr', false);
+  const btn = document.getElementById('verifyOtpBtn');
+  btn.disabled = true; btn.textContent = 'Verifying...';
+  const res = await fetch(`${API}/auth/verify-otp`, {
+    method: 'POST', headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ phone: otpPhone, otp })
+  }).then(r=>r.json());
+  if(res.success){
+    localStorage.setItem('token', res.token);
+    localStorage.setItem('userId', res.id);
+    localStorage.setItem('userName', res.name);
+    showToast('✅ Welcome back, ' + res.name + '!');
+    setTimeout(()=>location.href='dashboard.html', 1000);
+  } else {
+    showToast('❌ ' + res.message, 'error');
+    btn.disabled = false; btn.textContent = 'Verify OTP ✅';
+  }
+}
+
+function resendOTP(){
+  document.getElementById('otpStep1').style.display = 'block';
+  document.getElementById('otpStep2').style.display = 'none';
+  document.getElementById('otpCode').value = '';
+  showToast('🔄 Enter your phone number again to resend OTP');
+}
+
+async function sendResetCode(){
+  const email = document.getElementById('resetEmail').value.trim();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    setErr('resetEmailErr', true); return;
+  }
+  setErr('resetEmailErr', false);
+  const btn = document.getElementById('sendResetBtn');
+  btn.disabled = true; btn.textContent = 'Sending code...';
+  try{
+    const res = await fetch(`${API}/auth/send-reset-code`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email })
+    }).then(r=>r.json());
+    if(res.success){
+      showToast('✅ ' + res.message);
+    } else {
+      showToast('❌ ' + res.message, 'error');
+    }
+  }catch(e){
+    showToast('❌ Server error. Try again.','error');
+  }
+  btn.disabled = false; btn.textContent = 'Send Reset Code';
+}
+
+async function resetPassword(){
+  const email = document.getElementById('resetEmail').value.trim();
+  const code = document.getElementById('resetCode').value.trim();
+  const password = document.getElementById('resetPass').value;
+  const confirm = document.getElementById('resetConfirm').value;
+  let ok = true;
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setErr('resetEmailErr', true); ok=false; }
+  if(!code){ setErr('resetCodeErr', true); ok=false; } else setErr('resetCodeErr', false);
+  if(password.length < 6){ setErr('resetPassErr', true); ok=false; } else setErr('resetPassErr', false);
+  if(password !== confirm){ setErr('resetConfirmErr', true); ok=false; } else setErr('resetConfirmErr', false);
+  if(!ok) return;
+
+  const btn = document.getElementById('resetBtn');
+  btn.disabled=true; btn.textContent='Resetting...';
+  try{
+    const res = await fetch(`${API}/auth/reset-password`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email, code, password })
+    }).then(r=>r.json());
+    if(res.success){
+      showToast('✅ ' + res.message);
+      setTimeout(()=>switchTab('login',null),1500);
+    } else {
+      showToast('❌ ' + res.message, 'error');
+    }
+  }catch(e){
+    showToast('❌ Server error. Try again.','error');
+  }
+  btn.disabled=false; btn.textContent='Reset Password';
+}
+
+/* ---- LOGIN ---- */
+async function login(){
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPass').value;
+  const captcha = document.getElementById('loginCaptcha').value.trim().toUpperCase();
+  let ok = true;
+  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ setErr('loginEmailErr',true); ok=false; }
+  if(!password){ setErr('loginPassErr',true); ok=false; }
+  if(!captcha || captcha !== currentCaptcha){ setErr('loginCaptchaErr',true); ok=false; }
+  if(!ok) return;
+  const btn = document.getElementById('loginBtn');
+  btn.disabled=true; btn.textContent='Logging in...';
+  try{
+    const res = await fetch(`${API}/auth/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});
+    const data = await res.json();
+    if(data.success){
+      localStorage.setItem('token',data.token);
+      localStorage.setItem('userId',data.id);
+      localStorage.setItem('userName',data.name);
+      showToast('✅ Welcome back, '+data.name+'!');
+      setTimeout(()=>location.href='dashboard.html',1000);
+    }else{
+      showToast('❌ '+data.message,'error');
+      btn.disabled=false; btn.textContent='Login →';
+    }
+  }catch(e){ showToast('❌ Server error. Try again.','error'); btn.disabled=false; btn.textContent='Login →'; }
+}
+
+/* ---- SIGNUP ---- */
+async function signup(){
+  const n=validateName(), e=validateEmail();
+  const phone = document.getElementById('signupPhone').value;
+  const ph = phone.length===10 && /^[6-9][0-9]{9}$/.test(phone);
+  if(!ph) setErr('phoneErr',true);
+  const p=validatePass(), c=validateConfirm();
+  if(!n||!e||!ph||!p||!c) return;
+  const full_name=document.getElementById('signupName').value.trim();
+  const email=document.getElementById('signupEmail').value.trim();
+  const password=document.getElementById('signupPass').value;
+  const btn=document.getElementById('signupBtn');
+  btn.disabled=true; btn.textContent='Creating account...';
+  try{
+    const res=await fetch(`${API}/auth/signup`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({full_name,email,phone,password})});
+    const data=await res.json();
+    if(data.success){
+      showToast('🎉 Account created! Please login.');
+      setTimeout(()=>switchTab('login',null),1500);
+    }else{
+      showToast('❌ '+data.message,'error');
+    }
+    btn.disabled=false; btn.textContent='Create Account 🚀';
+  }catch(e){ showToast('❌ Server error. Try again.','error'); btn.disabled=false; btn.textContent='Create Account 🚀'; }
+}
+
+/* ---- GOOGLE SIGN IN ---- */
+// 🔑 Replace with your Google Client ID from https://console.cloud.google.com
+const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID';
+
+let googleTokenClient;
+
+function initGoogleAuth(){
+  if(typeof google==='undefined') return;
+  googleTokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: GOOGLE_CLIENT_ID,
+    scope: 'email profile',
+    callback: handleGoogleTokenResponse
+  });
+}
+
+function signInWithGoogle(){
+  if(!googleTokenClient){ showToast('❌ Google Sign-In not loaded. Check your connection.','error'); return; }
+  // Always opens the full Google "Choose an account" popup
+  googleTokenClient.requestAccessToken({ prompt: 'select_account' });
+}
+
+async function handleGoogleTokenResponse(tokenResponse){
+  if(tokenResponse.error){ showToast('❌ Google sign-in cancelled.','error'); return; }
+  try{
+    const res = await fetch(`${API}/auth/google`,{
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ access_token: tokenResponse.access_token })
+    }).then(r=>r.json());
+    if(res.success){
+      localStorage.setItem('token',res.token);
+      localStorage.setItem('userId',res.id);
+      localStorage.setItem('userName',res.name);
+      showToast('✅ Welcome, '+res.name+'!');
+      setTimeout(()=>location.href='dashboard.html',1000);
+    } else { showToast('❌ '+res.message,'error'); }
+  }catch(e){ showToast('❌ Server error. Try again.','error'); }
+}
+
+window.addEventListener('load',()=>{
+  generateCaptcha();
+  const tryInit=setInterval(()=>{ if(typeof google!=='undefined'){ clearInterval(tryInit); initGoogleAuth(); } },300);
+  setTimeout(()=>clearInterval(tryInit),10000);
+});
+
+let currentCaptcha = '';
+function generateCaptcha(){
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code = '';
+  for(let i=0;i<5;i++) code += chars.charAt(Math.floor(Math.random()*chars.length));
+  currentCaptcha = code;
+  document.getElementById('captchaCode').textContent = code;
+  document.getElementById('loginCaptcha').value = '';
+  setErr('loginCaptchaErr', false);
+}
+</script>
+<script src="chatbot.js"></script>
+<script>
+// Particles
+const pc=document.getElementById('particles');
+for(let i=0;i<25;i++){
+  const p=document.createElement('div');
+  p.className='particle';
+  const size=Math.random()*12+4;
+  p.style.cssText=`width:${size}px;height:${size}px;left:${Math.random()*100}%;animation-duration:${Math.random()*15+8}s;animation-delay:${Math.random()*10}s;opacity:${Math.random()*0.4+0.1};`;
+  pc.appendChild(p);
+}
+</script>
+<script src="global.js"></script>
+</html>

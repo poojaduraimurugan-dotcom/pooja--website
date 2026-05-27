@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCF Institute - Events</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif;}
+body{background:#0b0f1a;color:white;overflow-x:hidden;}
+/* LOADER */
+#loader{position:fixed;inset:0;background:#0b0f1a;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.5s;}
+#loader.hide{opacity:0;pointer-events:none;}
+.loader-logo{font-size:48px;margin-bottom:16px;animation:pulse 1s infinite;}
+.loader-text{color:#00ffff;font-size:18px;font-weight:700;margin-bottom:24px;}
+.loader-bar{width:200px;height:4px;background:rgba(255,255,255,0.1);border-radius:4px;overflow:hidden;}
+.loader-fill{height:100%;background:linear-gradient(90deg,#00ffff,#0080ff);border-radius:4px;animation:load 1.5s ease forwards;}
+@keyframes load{from{width:0%;}to{width:100%;}}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.1);}}
+header{position:fixed;top:0;width:100%;padding:15px 50px;display:flex;justify-content:space-between;align-items:center;background:rgba(11,15,26,0.97);backdrop-filter:blur(10px);z-index:1000;border-bottom:1px solid rgba(0,255,255,0.1);}
+.logo{display:flex;align-items:center;gap:12px;font-size:24px;font-weight:bold;color:#00ffff;text-decoration:none;}
+.logo img{width:42px;height:42px;border-radius:50%;}
+nav{display:flex;gap:5px;align-items:center;}
+nav a{color:#ccc;text-decoration:none;padding:8px 14px;border-radius:8px;transition:0.3s;font-size:14px;}
+nav a:hover{color:#00ffff;background:rgba(0,255,255,0.1);}
+.nav-btn{background:#00ffff!important;color:#0b0f1a!important;font-weight:bold!important;}
+.page-hero{padding:140px 50px 80px;text-align:center;background:linear-gradient(rgba(11,15,26,0.85),rgba(11,15,26,1)),url('https://images.unsplash.com/photo-1540575467063-178a50c2df87');background-size:cover;}
+.page-hero h1{font-size:50px;font-weight:800;background:linear-gradient(135deg,#fff,#00ffff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:15px;}
+.page-hero p{color:#aaa;font-size:17px;}
+section{padding:80px 50px;}
+.events-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:25px;}
+.event-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:18px;overflow:hidden;transition:0.4s;}
+.event-card:hover{transform:translateY(-6px);border-color:rgba(0,255,255,0.3);}
+.event-date{background:linear-gradient(135deg,#00ffff,#0080ff);padding:16px 20px;display:flex;align-items:center;gap:14px;}
+.event-date .day{font-size:36px;font-weight:900;color:#000;line-height:1;}
+.event-date .month{font-size:13px;font-weight:700;color:#000;}
+.event-body{padding:22px;}
+.event-tag{background:rgba(0,255,255,0.1);color:#00ffff;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;display:inline-block;margin-bottom:10px;}
+.event-body h3{font-size:18px;font-weight:700;margin-bottom:8px;}
+.event-body p{color:#aaa;font-size:13px;line-height:1.6;margin-bottom:14px;}
+.event-meta{display:flex;gap:16px;font-size:12px;color:#555;margin-bottom:16px;}
+.event-meta span{display:flex;align-items:center;gap:4px;}
+.reg-btn{padding:9px 20px;background:linear-gradient(135deg,#00ffff,#0080ff);color:#000;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:13px;transition:0.3s;}
+.reg-btn:hover{opacity:0.85;}
+footer{background:#060810;border-top:1px solid rgba(255,255,255,0.05);padding:30px 50px;text-align:center;color:#aaa;font-size:13px;}
+@media(max-width:768px){header{padding:15px 20px;}nav{display:none;}section{padding:60px 20px;}.page-hero h1{font-size:36px;}}
+</style>
+</head>
+<body>
+<div id="loader"><div class="loader-logo">🎓</div><div class="loader-text">TCF Institute</div><div class="loader-bar"><div class="loader-fill"></div></div></div>
+<header>
+<a href="index.html" class="logo"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">TCF Institute</a>
+<nav>
+<a href="index.html">Home</a><a href="courses.html">Courses</a><a href="placements.html">Placements</a>
+<a href="about.html">About</a><a href="contact.html">Contact</a><a href="auth.html">Login</a>
+<a href="dashboard.html" class="nav-btn">📊 Dashboard</a>
+</nav>
+</header>
+<div class="page-hero"><h1>Events & Workshops</h1><p>Join our upcoming events, workshops and placement drives!</p></div>
+<section>
+<div class="events-grid">
+<div class="event-card"><div class="event-date"><div><div class="day">15</div><div class="month">JUN 2026</div></div><div style="color:#000;"><div style="font-size:16px;font-weight:800;">Free Demo Class</div><div style="font-size:12px;">Web Development</div></div></div><div class="event-body"><span class="event-tag">🎓 Free Event</span><h3>Web Development Demo Class</h3><p>Join our free demo class and experience TCF's teaching style. Learn HTML, CSS basics in just 2 hours!</p><div class="event-meta"><span>🕐 10:00 AM - 12:00 PM</span><span>📍 Chennai + Online</span></div><button class="reg-btn" onclick="alert('Registered! We will contact you soon.')">Register Free →</button></div></div>
+<div class="event-card"><div class="event-date"><div><div class="day">20</div><div class="month">JUN 2026</div></div><div style="color:#000;"><div style="font-size:16px;font-weight:800;">Placement Drive</div><div style="font-size:12px;">TCS & Infosys</div></div></div><div class="event-body"><span class="event-tag">🏢 Placement</span><h3>Campus Placement Drive - TCS & Infosys</h3><p>TCS and Infosys are visiting TCF for campus recruitment. 50+ openings for Web Dev and Testing graduates!</p><div class="event-meta"><span>🕐 9:00 AM - 5:00 PM</span><span>📍 TCF Chennai Center</span></div><button class="reg-btn" onclick="alert('Applied! Prepare well!')">Apply Now →</button></div></div>
+<div class="event-card"><div class="event-date"><div><div class="day">25</div><div class="month">JUN 2026</div></div><div style="color:#000;"><div style="font-size:16px;font-weight:800;">Hackathon</div><div style="font-size:12px;">₹50,000 Prize</div></div></div><div class="event-body"><span class="event-tag">🏆 Competition</span><h3>TCF Hackathon 2026 - ₹50,000 Prize Pool</h3><p>Build a real-world project in 24 hours! Open to all TCF students. Top 3 teams win cash prizes and job offers!</p><div class="event-meta"><span>🕐 24 Hours</span><span>📍 Online</span></div><button class="reg-btn" onclick="alert('Team registered! Good luck!')">Join Hackathon →</button></div></div>
+<div class="event-card"><div class="event-date"><div><div class="day">01</div><div class="month">JUL 2026</div></div><div style="color:#000;"><div style="font-size:16px;font-weight:800;">New Batch</div><div style="font-size:12px;">All Courses</div></div></div><div class="event-body"><span class="event-tag">🆕 New Batch</span><h3>July 2026 Batch Starts - All Courses</h3><p>New batches starting for all 6 courses. Morning, Evening and Weekend batches available. Limited seats!</p><div class="event-meta"><span>🕐 Multiple Timings</span><span>📍 Chennai + Online</span></div><button class="reg-btn" onclick="location.href='courses.html'">Enroll Now →</button></div></div>
+</div>
+</section>
+<footer><p>© 2026 TCF Institute. All rights reserved.</p></footer>
+<script src="chatbot.js"></script>
+<script>setTimeout(()=>document.getElementById('loader').classList.add('hide'),1800);</script>
+</body>
+</html>

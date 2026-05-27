@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCF Institute - Contact</title>
+<link rel="stylesheet" href="enhancements.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif;}
+body{background:#0b0f1a;color:white;overflow-x:hidden;}
+header{position:fixed;top:0;width:100%;padding:15px 50px;display:flex;justify-content:space-between;align-items:center;background:rgba(11,15,26,0.95);backdrop-filter:blur(10px);z-index:1000;border-bottom:1px solid rgba(0,255,255,0.1);}
+.logo{display:flex;align-items:center;gap:12px;font-size:26px;font-weight:bold;color:#00ffff;}
+.logo img{width:45px;height:45px;border-radius:50%;}
+nav{display:flex;gap:5px;align-items:center;}
+nav a{color:#ccc;text-decoration:none;padding:8px 16px;border-radius:8px;transition:0.3s;font-size:15px;}
+nav a:hover,nav a.active{color:#00ffff;background:rgba(0,255,255,0.1);}
+.nav-btn{background:#00ffff;color:#0b0f1a!important;font-weight:bold;}
+.page-hero{padding:140px 50px 80px;text-align:center;background:linear-gradient(rgba(11,15,26,0.8),rgba(11,15,26,1)),url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d');background-size:cover;}
+.page-hero h1{font-size:52px;font-weight:800;background:linear-gradient(135deg,#fff,#00ffff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:15px;}
+.page-hero p{color:#aaa;font-size:18px;}
+section{padding:80px 50px;}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;}
+.contact-info h2{font-size:38px;font-weight:800;margin-bottom:20px;}
+.contact-info p{color:#aaa;font-size:16px;line-height:1.8;margin-bottom:30px;}
+.contact-item{display:flex;align-items:center;gap:15px;padding:18px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.contact-icon{width:50px;height:50px;background:rgba(0,255,255,0.1);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.contact-item h4{font-size:15px;font-weight:600;margin-bottom:4px;}
+.contact-item p{color:#aaa;font-size:14px;margin:0;}
+.contact-form{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:40px;}
+.contact-form h3{font-size:26px;font-weight:700;margin-bottom:25px;}
+.form-group{margin-bottom:18px;}
+.form-group label{display:block;color:#aaa;font-size:14px;margin-bottom:8px;}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:13px 16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:white;font-size:15px;outline:none;transition:0.3s;}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:#00ffff;box-shadow:0 0 0 3px rgba(0,255,255,0.1);}
+.form-group textarea{height:130px;resize:none;}
+.form-group select option{background:#0b0f1a;}
+.char-count{font-size:11px;color:#555;text-align:right;margin-top:4px;}
+/* FAQ */
+.faq-item{border:1px solid rgba(255,255,255,0.07);border-radius:12px;margin-bottom:10px;overflow:hidden;}
+.faq-q{padding:16px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:600;transition:0.3s;}
+.faq-q:hover{background:rgba(0,255,255,0.05);color:#00ffff;}
+.faq-a{display:none;padding:0 20px 16px;color:#aaa;font-size:13px;line-height:1.8;}
+.faq-item.open .faq-a{display:block;}
+.faq-item.open .faq-q{color:#00ffff;}
+.faq-arrow{transition:0.3s;font-size:12px;}
+.faq-item.open .faq-arrow{transform:rotate(180deg);}
+/* Toast */
+.ctToast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(80px);background:linear-gradient(135deg,#4caf50,#2e7d32);color:white;padding:14px 28px;border-radius:12px;font-weight:700;font-size:14px;z-index:9999;transition:0.4s;opacity:0;}
+.ctToast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+.btn{width:100%;padding:14px;border:none;border-radius:10px;font-size:16px;font-weight:bold;cursor:pointer;transition:0.3s;background:#00ffff;color:#0b0f1a;}
+.btn:hover{background:white;transform:translateY(-2px);}
+footer{background:#060810;border-top:1px solid rgba(255,255,255,0.05);padding:30px 50px;text-align:center;color:#aaa;font-size:14px;}
+@media(max-width:768px){header{padding:15px 20px;}nav{display:none;}.contact-grid{grid-template-columns:1fr;}.page-hero h1{font-size:36px;}section{padding:60px 20px;}}
+</style>
+</head>
+<body>
+<header>
+<a href="index.html" class="logo"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">TCF Institute</a>
+<nav>
+<a href="index.html">Home</a>
+<a href="courses.html">Courses</a>
+<a href="placements.html">Placements</a>
+<a href="about.html">About</a>
+<a href="contact.html" class="active">Contact</a>
+<a href="auth.html">Login</a>
+<a href="apply.html" style="background:rgba(0,255,255,0.15);color:#00ffff;">Apply Now</a>
+<a href="dashboard.html" class="nav-btn">📊 Dashboard</a>
+</nav>
+</header>
+
+<div class="page-hero">
+<h1>Contact Us</h1>
+<p>We're here to help you start your journey</p>
+</div>
+
+<section>
+<div class="contact-grid">
+<div class="contact-info">
+<h2>Let's Talk About<br>Your Future</h2>
+<p>Have questions about our courses, admissions, or placements? Our team is always ready to help you make the right decision for your career.</p>
+<div class="contact-item">
+<div class="contact-icon">📞</div>
+<div><h4>Phone</h4><p>+91 9876543210</p></div>
+</div>
+<div class="contact-item">
+<div class="contact-icon">✉️</div>
+<div><h4>Email</h4><p>tcftechnologies@gmail.com</p></div>
+</div>
+<div class="contact-item">
+<div class="contact-icon">📍</div>
+<div><h4>Location</h4><p>Chennai, Tamil Nadu, India</p></div>
+</div>
+<div class="contact-item">
+<div class="contact-icon">🕐</div>
+<div><h4>Working Hours</h4><p>Monday - Saturday: 9AM - 6PM</p></div>
+</div>
+<div class="contact-item">
+<div class="contact-icon">💬</div>
+<div><h4>WhatsApp</h4><p>+91 9876543210</p></div>
+</div>
+</div>
+
+<div class="contact-form">
+<h3>Send Us a Message</h3>
+<div class="form-group"><label>Full Name</label><input type="text" id="cName" placeholder="Your full name" data-type="name" data-validate="name"></div>
+<div class="form-group"><label>Email Address</label><input type="email" id="cEmail" placeholder="Your email" data-type="email" data-validate="email"></div>
+<div class="form-group"><label>Phone Number</label><input type="text" id="cPhone" placeholder="Your phone" data-type="phone" data-validate="phone"></div>
+<div class="form-group">
+<label>Interested In</label>
+<select id="cCourse">
+<option value="">Select a course</option>
+<option>Web Development</option>
+<option>Software Testing</option>
+<option>Data Analytics</option>
+<option>General Inquiry</option>
+</select>
+</div>
+<div class="form-group"><label>Message</label><textarea id="cMsg" placeholder="Your message..." oninput="countChars(this,'charCount',300)" maxlength="300"></textarea><div class="char-count" id="charCount">0 / 300</div></div>
+<button class="btn" onclick="sendMsg()">Send Message 🚀</button>
+</div>
+</div>
+</section>
+
+</section>
+
+<!-- FAQ -->
+<section style="padding:60px 50px;">
+<h2 style="font-size:36px;font-weight:800;text-align:center;margin-bottom:10px;">Frequently Asked Questions</h2>
+<p style="color:#aaa;text-align:center;margin-bottom:40px;">Quick answers to common questions</p>
+<div style="max-width:750px;margin:0 auto;">
+  <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is the duration of courses? <span class="faq-arrow">▼</span></div><div class="faq-a">Courses range from 2 to 4 months. Web Dev & AWS are 3 months, Java Full Stack is 4 months, and Testing, Python, Data Analytics are 2-2.5 months.</div></div>
+  <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Is placement guaranteed? <span class="faq-arrow">▼</span></div><div class="faq-a">We provide 100% placement assistance including resume building, mock interviews, and direct referrals to our 50+ hiring partners. Our placement rate is 95%.</div></div>
+  <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Do I need prior coding experience? <span class="faq-arrow">▼</span></div><div class="faq-a">No! All our courses start from basics. Anyone with 10th pass qualification can join. We teach from scratch to advanced level.</div></div>
+  <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Are online classes available? <span class="faq-arrow">▼</span></div><div class="faq-a">Yes! We offer both online (live Zoom/Meet) and offline (Chennai center) classes with the same curriculum, projects and placement support.</div></div>
+  <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What certificate will I receive? <span class="faq-arrow">▼</span></div><div class="faq-a">You'll receive an industry-recognized TCF Institute completion certificate. AWS course students also get guidance for official AWS certification exams.</div></div>
+  <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can I pay fees in installments? <span class="faq-arrow">▼</span></div><div class="faq-a">Yes! We offer flexible payment options. Contact us at +91 9876543210 to discuss installment plans that suit your budget.</div></div>
+</div>
+</section>
+
+<!-- GOOGLE MAP + CALLBACK -->
+<section style="padding:40px 50px;">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;">
+  <!-- Map -->
+  <div>
+    <h3 style="font-size:20px;font-weight:800;margin-bottom:16px;">📍 Find Us</h3>
+    <div style="border-radius:16px;overflow:hidden;border:1px solid rgba(0,255,255,0.15);">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d248849.84916296526!2d80.00000!3d13.08268!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a5265ea4f7d3361%3A0x6e61a70b6863d433!2sChennai%2C%20Tamil%20Nadu!5e0!3m2!1sen!2sin!4v1234567890" width="100%" height="280" style="border:0;display:block;" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;">
+      <a href="https://wa.me/919876543210" target="_blank" style="display:flex;align-items:center;gap:8px;padding:10px 18px;background:#25D366;color:#000;border-radius:10px;font-weight:700;font-size:13px;text-decoration:none;">💬 WhatsApp Us</a>
+      <a href="tel:+919876543210" style="display:flex;align-items:center;gap:8px;padding:10px 18px;background:rgba(0,255,255,0.1);color:#00ffff;border:1px solid rgba(0,255,255,0.2);border-radius:10px;font-weight:700;font-size:13px;text-decoration:none;">📞 Call Now</a>
+    </div>
+  </div>
+  <!-- Callback Request -->
+  <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(0,255,255,0.15);border-radius:16px;padding:28px;">
+    <h3 style="font-size:20px;font-weight:800;margin-bottom:6px;">📞 Request a Callback</h3>
+    <p style="color:#555;font-size:13px;margin-bottom:20px;">We'll call you back within 30 minutes!</p>
+    <div style="margin-bottom:14px;">
+      <input id="cbName" placeholder="Your Name" style="width:100%;padding:11px 14px;background:#0b0f1a;border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:white;font-size:14px;outline:none;margin-bottom:10px;">
+      <input id="cbPhone" placeholder="Your Phone Number" style="width:100%;padding:11px 14px;background:#0b0f1a;border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:white;font-size:14px;outline:none;margin-bottom:10px;">
+      <select id="cbTime" style="width:100%;padding:11px 14px;background:#0b0f1a;border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:white;font-size:14px;outline:none;">
+        <option>Preferred Time: Morning (9AM-12PM)</option>
+        <option>Afternoon (12PM-3PM)</option>
+        <option>Evening (3PM-6PM)</option>
+        <option>Call me ASAP!</option>
+      </select>
+    </div>
+    <button onclick="requestCallback()" style="width:100%;padding:12px;background:linear-gradient(135deg,#00ffff,#0080ff);color:#000;border:none;border-radius:8px;font-weight:800;font-size:14px;cursor:pointer;">📞 Request Callback</button>
+    <div style="margin-top:16px;padding:12px;background:rgba(76,175,80,0.06);border:1px solid rgba(76,175,80,0.2);border-radius:8px;">
+      <p style="color:#4caf50;font-size:12px;font-weight:700;">🟢 Office Hours</p>
+      <p style="color:#aaa;font-size:12px;margin-top:4px;">Mon–Sat: 9AM – 6PM | Sun: Closed</p>
+      <p style="color:#aaa;font-size:12px;">Response time: Within 30 minutes</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<footer><p>© 2026 TCF Institute. All rights reserved.</p></footer>
+
+<script>
+function countChars(el,countId,max){
+  document.getElementById(countId).textContent=el.value.length+' / '+max;
+}
+function toggleFaq(el){
+  const item=el.parentElement;
+  document.querySelectorAll('.faq-item').forEach(f=>{if(f!==item)f.classList.remove('open');});
+  item.classList.toggle('open');
+}
+function requestCallback(){
+  const name=document.getElementById('cbName').value.trim();
+  const phone=document.getElementById('cbPhone').value.trim();
+  if(!name||!phone){alert('Please enter name and phone!');return;}
+  const toast=document.getElementById('ctToast');
+  toast.textContent='✅ Callback requested! We\'ll call '+name+' soon!';
+  toast.classList.add('show');
+  setTimeout(()=>toast.classList.remove('show'),4000);
+  document.getElementById('cbName').value='';
+  document.getElementById('cbPhone').value='';
+}
+function sendMsg(){
+  const name=document.getElementById('cName').value.trim();
+  const email=document.getElementById('cEmail').value.trim();
+  const msg=document.getElementById('cMsg').value.trim();
+  if(!name||!email){showToast('Please fill Name and Email','error');return;}
+  showToast('✅ Message sent! We will contact you soon.','success',4000);
+  document.querySelectorAll('input,textarea,select').forEach(el=>el.value='');
+  document.getElementById('charCount').textContent='0 / 300';
+}
+</script>
+<script src="chatbot.js"></script>
+<script src="validation.js"></script>
+<script src="global.js"></script>
+<script src="enhancements.js"></script>
+</body>
+</html>

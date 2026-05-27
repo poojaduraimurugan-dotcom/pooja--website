@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCF Institute - Placements</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif;}
+body{background:#0b0f1a;color:white;overflow-x:hidden;}
+header{position:fixed;top:0;width:100%;padding:15px 50px;display:flex;justify-content:space-between;align-items:center;background:rgba(11,15,26,0.95);backdrop-filter:blur(10px);z-index:1000;border-bottom:1px solid rgba(0,255,255,0.1);}
+.logo{display:flex;align-items:center;gap:12px;font-size:26px;font-weight:bold;color:#00ffff;}
+.logo img{width:45px;height:45px;border-radius:50%;}
+nav{display:flex;gap:5px;align-items:center;}
+nav a{color:#ccc;text-decoration:none;padding:8px 16px;border-radius:8px;transition:0.3s;font-size:15px;}
+nav a:hover,nav a.active{color:#00ffff;background:rgba(0,255,255,0.1);}
+.nav-btn{background:#00ffff;color:#0b0f1a!important;font-weight:bold;}
+.page-hero{padding:140px 50px 80px;text-align:center;background:linear-gradient(rgba(11,15,26,0.8),rgba(11,15,26,1)),url('https://images.unsplash.com/photo-1520607162513-77705c0f0d4a');background-size:cover;}
+.page-hero h1{font-size:52px;font-weight:800;background:linear-gradient(135deg,#fff,#00ffff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:15px;}
+.page-hero p{color:#aaa;font-size:18px;}
+section{padding:80px 50px;}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:25px;margin-bottom:60px;}
+.stat-card{background:rgba(0,255,255,0.05);border:1px solid rgba(0,255,255,0.2);border-radius:16px;padding:30px;text-align:center;}
+.stat-card h3{font-size:42px;font-weight:800;color:#00ffff;margin-bottom:8px;}
+.stat-card p{color:#aaa;font-size:15px;}
+.companies-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:25px;margin-bottom:60px;}
+.company-card{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:30px;text-align:center;transition:0.4s;}
+.company-card:hover{transform:translateY(-8px);border-color:rgba(0,255,255,0.3);box-shadow:0 20px 40px rgba(0,255,255,0.1);}
+.company-card img{width:130px;height:65px;object-fit:contain;margin-bottom:20px;filter:brightness(0) invert(1);opacity:0.8;}
+.company-card h3{font-size:22px;font-weight:700;margin-bottom:8px;}
+.company-card p{color:#aaa;font-size:14px;margin-bottom:15px;}
+.badge{background:rgba(0,255,255,0.1);color:#00ffff;padding:6px 16px;border-radius:20px;font-size:13px;font-weight:600;display:inline-block;}
+.section-title{font-size:38px;font-weight:800;margin-bottom:15px;text-align:center;}
+.section-sub{color:#aaa;font-size:17px;text-align:center;margin-bottom:50px;}
+table{width:100%;border-collapse:collapse;background:rgba(255,255,255,0.03);border-radius:16px;overflow:hidden;}
+th{background:rgba(0,255,255,0.1);color:#00ffff;padding:16px 20px;text-align:left;font-size:14px;}
+td{padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.05);color:#ccc;font-size:14px;}
+tr:hover td{background:rgba(255,255,255,0.03);}
+footer{background:#060810;border-top:1px solid rgba(255,255,255,0.05);padding:30px 50px;text-align:center;color:#aaa;font-size:14px;}
+/* Ticker */
+.ticker-wrap{background:rgba(0,255,255,0.05);border-top:1px solid rgba(0,255,255,0.1);border-bottom:1px solid rgba(0,255,255,0.1);padding:12px 0;overflow:hidden;margin-bottom:40px;}
+.ticker-wrap marquee{color:#00ffff;font-size:13px;font-weight:600;}
+/* Salary bar */
+.salary-bar{margin-top:8px;background:rgba(255,255,255,0.05);border-radius:10px;height:8px;overflow:hidden;}
+.salary-fill{height:8px;border-radius:10px;background:linear-gradient(90deg,#00ffff,#0080ff);transition:1.5s;width:0%;}
+@media(max-width:768px){header{padding:15px 20px;}nav{display:none;}.stats-grid{grid-template-columns:repeat(2,1fr);}.page-hero h1{font-size:36px;}section{padding:60px 20px;}}
+</style>
+</head>
+<body>
+<header>
+<a href="index.html" class="logo"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">TCF Institute</a>
+<nav>
+<a href="index.html">Home</a>
+<a href="courses.html">Courses</a>
+<a href="placements.html" class="active">Placements</a>
+<a href="about.html">About</a>
+<a href="contact.html">Contact</a>
+<a href="auth.html">Login</a>
+<a href="apply.html" style="background:rgba(0,255,255,0.15);color:#00ffff;">Apply Now</a>
+<a href="dashboard.html" class="nav-btn">📊 Dashboard</a>
+</nav>
+</header>
+
+<div class="page-hero">
+<h1>Our Placements</h1>
+<p>350+ students placed in top companies across India</p>
+</div>
+
+<section>
+<!-- Success Ticker -->
+<div class="ticker-wrap">
+  <marquee>🎉 350+ Students Placed | 95% Placement Rate | Top Companies Hiring Now 🚀</marquee>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card"><h3>350+</h3><p>Students Placed</p></div>
+  <div class="stat-card"><h3>50+</h3><p>Partner Companies</p></div>
+  <div class="stat-card"><h3>₹4.5L</h3><p>Average Package</p></div>
+  <div class="stat-card"><h3>95%</h3><p>Placement Rate</p></div>
+</div>
+
+<h2 class="section-title">Our Hiring Partners</h2>
+<p class="section-sub">Top companies that hire our students</p>
+
+<div class="companies-grid">
+<div class="company-card">
+<img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Tata_Consultancy_Services_Logo.svg">
+<h3>TCS</h3><p>Tata Consultancy Services</p>
+<div class="salary-bar"><div class="salary-fill" data-width="85%"></div></div>
+<span style="color:#aaa;font-size:12px;">Avg: ₹4.2 LPA</span><br>
+<span class="badge">25 Students Placed</span>
+</div>
+<div class="company-card">
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Infosys_logo.svg">
+<h3>Infosys</h3><p>Infosys Limited</p>
+<div class="salary-bar"><div class="salary-fill" data-width="75%"></div></div>
+<span style="color:#aaa;font-size:12px;">Avg: ₹3.8 LPA</span><br>
+<span class="badge">18 Students Placed</span>
+</div>
+<div class="company-card">
+<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Wipro_Primary_Logo_Color_RGB.svg">
+<h3>Wipro</h3><p>Wipro Technologies</p>
+<div class="salary-bar"><div class="salary-fill" data-width="90%"></div></div>
+<span style="color:#aaa;font-size:12px;">Avg: ₹4.5 LPA</span><br>
+<span class="badge">15 Students Placed</span>
+</div>
+<div class="company-card">
+<img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Tata_Consultancy_Services_Logo.svg">
+<div class="salary-bar"><div class="salary-fill" data-width="80%"></div></div>
+<span style="color:#aaa;font-size:12px;">Avg: ₹5.0 LPA</span><br>
+<span class="badge">12 Students Placed</span>
+</div>
+<div class="company-card">
+  <h3>Tech Mahindra</h3>
+  <p>Tech Mahindra Limited</p>
+
+  <div class="salary-bar">
+    <div class="salary-fill" data-width="70%"></div>
+  </div>
+
+  <span style="color:#aaa;font-size:12px;">Avg: ₹4.0 LPA</span><br>
+  <span class="badge">10 Students Placed</span>
+</div>
+<div class="company-card">
+<img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Wipro_Primary_Logo_Color_RGB.svg">
+<h3>Cognizant</h3><p>Cognizant Technology</p>
+<div class="salary-bar"><div class="salary-fill" data-width="78%"></div></div>
+<span style="color:#aaa;font-size:12px;">Avg: ₹4.8 LPA</span><br>
+<span class="badge">8 Students Placed</span>
+</div>
+</div>
+
+<h2 class="section-title">Recent Placements</h2>
+<p class="section-sub">Our recently placed students</p>
+<table id="placementsTable">
+<thead><tr><th>Student Name</th><th>Company</th><th>Role</th><th>Package</th><th>Date</th></tr></thead>
+<tbody id="placementsBody">
+<tr><td>Pooja</td><td>TCS</td><td>Software Engineer</td><td>₹4.2 LPA</td><td>Jan 2026</td></tr>
+<tr><td>Gopika</td><td>Infosys</td><td>Test Engineer</td><td>₹3.8 LPA</td><td>Feb 2026</td></tr>
+<tr><td>Harish</td><td>Wipro</td><td>Data Analyst</td><td>₹4.5 LPA</td><td>Mar 2026</td></tr>
+</tbody>
+</table>
+</section>
+
+<footer><p>© 2026 TCF Institute. All rights reserved.</p></footer>
+
+<script>
+// Animate salary bars on scroll
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.querySelectorAll('.salary-fill').forEach(bar=>{
+        bar.style.width=bar.getAttribute('data-width');
+      });
+    }
+  });
+},{threshold:0.3});
+document.querySelectorAll('.companies-grid').forEach(g=>observer.observe(g));
+// Animate stat counters
+const statNums=document.querySelectorAll('.stat-card h3');
+const statObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const el=e.target;
+      const raw=el.innerText.replace(/[^0-9.]/g,'');
+      const isFloat=raw.includes('.');
+      const target=parseFloat(raw);
+      const prefix=el.innerText.includes('₹')?'₹':'';
+      const suffix=el.innerText.includes('%')?'%':el.innerText.includes('L')?'L':el.innerText.includes('+')?'+':'';
+      let count=0,steps=60;
+      const inc=target/steps;
+      const t=setInterval(()=>{
+        count+=inc;
+        if(count>=target){count=target;clearInterval(t);}
+        el.innerText=prefix+(isFloat?count.toFixed(1):Math.floor(count))+suffix;
+      },20);
+      statObs.unobserve(el);
+    }
+  });
+});
+statNums.forEach(n=>statObs.observe(n));
+</script>
+<script src="chatbot.js"></script>
+<script src="global.js"></script>
+</body>
+</html>

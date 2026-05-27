@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mock Assessments - TCF Institute</title>
+<style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif;}
+    body{background:#0b0f1a;color:white;padding:40px 20px;}
+    header{position:fixed;top:0;left:0;width:100%;padding:15px 50px;display:flex;justify-content:space-between;align-items:center;background:rgba(11,15,26,0.95);backdrop-filter:blur(10px);z-index:1000;border-bottom:1px solid rgba(0,255,255,0.1);}
+    .logo{display:flex;align-items:center;gap:12px;font-size:22px;font-weight:bold;color:#00ffff;text-decoration:none;}
+    .logo img{width:40px;height:40px;border-radius:50%;}
+    .container{max-width:1200px;margin:80px auto 0;}
+    h1{font-size:32px;margin-bottom:10px;color:#00ffff;}
+    .subtitle{color:#aaa;margin-bottom:40px;}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));gap:25px;}
+    .card{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);padding:25px;border-radius:18px;transition:0.3s;}
+    .card:hover{transform:translateY(-5px);border-color:#00ffff;}
+    .card h3{font-size:20px;margin-bottom:15px;}
+    .card p{font-size:14px;color:#ccc;margin-bottom:8px;}
+    .card strong{color:#00ffff;}
+    .btn{width:100%;padding:12px;margin-top:20px;background:linear-gradient(135deg,#00ffff,#0080ff);border:none;border-radius:10px;color:#000;font-weight:700;cursor:pointer;transition:0.3s;}
+    .btn:hover{opacity:0.9;transform:scale(1.02);}
+    #loading{text-align:center;padding:50px;color:#00ffff;font-weight:600;}
+</style>
+</head>
+<body>
+<header>
+    <a href="index.html" class="logo"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">TCF Institute</a>
+    <a href="index.html" style="color:#aaa;text-decoration:none;font-size:14px;">← Back to Home</a>
+</header>
+
+<div class="container">
+    <h1>Mock Assessments</h1>
+    <p class="subtitle">Select an assessment to start your practice session and improve your skills.</p>
+    
+    <div id="loading">Gathering assessments...</div>
+    <div class="grid" id="assessmentGrid"></div>
+</div>
+
+<script>
+    const API = 'http://localhost:8000/api';
+
+    async function fetchAssessments() {
+        try {
+            const response = await fetch(`${API}/assessments/mock-assessments`);
+            const data = await response.json();
+            document.getElementById('loading').style.display = 'none';
+            
+            if (data.success) {
+                const grid = document.getElementById('assessmentGrid');
+                grid.innerHTML = data.data.map(item => `
+                    <div class="card">
+                        <h3>${item.title}</h3>
+                        <p>⏱ <strong>Duration:</strong> ${item.duration}</p>
+                        <p>❓ <strong>Questions:</strong> ${item.questions}</p>
+                        <button class="btn" onclick="startTest('${item.title}', '${item.duration}', ${item.questions})">Start Assessment</button>
+                    </div>
+                `).join('');
+            }
+        } catch (err) {
+            document.getElementById('loading').textContent = 'Error loading assessments. Please ensure the server is running.';
+        }
+    }
+
+    async function startTest(title, duration, questions) {
+        const userId = localStorage.getItem('userId');
+        if (!userId) {
+            alert("Please login first to save your results!");
+            window.location.href = 'auth.html';
+            return;
+        }
+
+        if (confirm(`Start ${title}? This will simulate a completed test for your record.`)) {
+            const resultPayload = {
+                user_id: userId,
+                test_name: title,
+                score: "85%",
+                status: "Passed",
+                duration: duration,
+                marks: `${Math.floor(questions * 0.85)}/${questions}`,
+                date: new Date().toISOString().slice(0, 10)
+            };
+
+            try {
+                const res = await fetch(`${API}/mocktests/submit`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(resultPayload)
+                });
+                const result = await res.json();
+                if (result.success) {
+                    alert("Assessment completed! Results saved to your dashboard.");
+                    window.location.href = 'dashboard.html';
+                }
+            } catch (err) {
+                console.error("Save error:", err);
+            }
+        }
+    }
+
+    window.onload = fetchAssessments;
+</script>
+<script src="chatbot.js"></script>
+</body>
+</html>

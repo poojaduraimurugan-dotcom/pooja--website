@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCF Institute - Courses</title>
+<link rel="stylesheet" href="enhancements.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif;scroll-behavior:smooth;}
+body{background:#0b0f1a;color:white;overflow-x:hidden;}
+header{position:fixed;top:0;width:100%;padding:12px 30px;display:flex;justify-content:space-between;align-items:center;background:rgba(11,15,26,0.97);backdrop-filter:blur(10px);z-index:1000;border-bottom:1px solid rgba(0,255,255,0.1);}
+.logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:bold;color:#00ffff;text-decoration:none;flex-shrink:0;}
+.logo img{width:36px;height:36px;border-radius:50%;}
+nav{display:flex;gap:3px;align-items:center;flex-wrap:nowrap;}
+nav a{color:#ccc;text-decoration:none;padding:7px 10px;border-radius:8px;transition:0.3s;font-size:13px;white-space:nowrap;}
+nav a:hover,nav a.active{color:#00ffff;background:rgba(0,255,255,0.1);}
+.nav-btn{background:#00ffff!important;color:#0b0f1a!important;font-weight:bold!important;}
+@media(max-width:1100px){nav a{padding:6px 8px;font-size:12px;}}
+@media(max-width:960px){nav a:not(.nav-btn):not([style]){display:none;}}
+.page-hero{padding:140px 50px 80px;text-align:center;background:linear-gradient(rgba(11,15,26,0.8),rgba(11,15,26,1)),url('https://images.unsplash.com/photo-1498050108023-c5249f4df085');background-size:cover;}
+.page-hero h1{font-size:50px;font-weight:800;background:linear-gradient(135deg,#fff,#00ffff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:15px;}
+.page-hero p{color:#aaa;font-size:17px;max-width:600px;margin:0 auto;}
+.btn{padding:12px 28px;border:none;border-radius:10px;font-size:14px;font-weight:bold;cursor:pointer;transition:0.3s;text-decoration:none;display:inline-block;}
+.btn-primary{background:#00ffff;color:#0b0f1a;}
+.btn-primary:hover{background:white;transform:translateY(-3px);}
+section{padding:80px 50px;}
+.courses-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:30px;}
+.course-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:20px;overflow:hidden;transition:0.4s;}
+.course-card:hover{transform:translateY(-8px);border-color:rgba(0,255,255,0.3);box-shadow:0 20px 40px rgba(0,255,255,0.08);}
+.course-card img{width:100%;height:210px;object-fit:cover;}
+.course-body{padding:25px;}
+.course-tag{background:rgba(0,255,255,0.1);color:#00ffff;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;display:inline-block;margin-bottom:12px;}
+.course-body h3{font-size:22px;font-weight:700;margin-bottom:10px;}
+.course-body p{color:#aaa;font-size:14px;line-height:1.7;margin-bottom:18px;}
+.course-features{list-style:none;margin-bottom:20px;}
+.course-features li{color:#ccc;font-size:13px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;align-items:center;gap:8px;}
+.course-features li::before{content:'✓';color:#00ffff;font-weight:bold;}
+.course-footer{display:flex;justify-content:space-between;align-items:center;padding-top:15px;border-top:1px solid rgba(255,255,255,0.06);}
+.course-price{font-size:24px;font-weight:800;color:#00ffff;}
+.course-meta{color:#aaa;font-size:12px;}
+.popup{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:2000;padding:40px 20px;overflow:auto;backdrop-filter:blur(5px);}
+.popup-content{background:#111827;border:1px solid rgba(0,255,255,0.2);padding:35px;border-radius:20px;max-width:550px;margin:auto;animation:fadeUp 0.4s;}
+.popup-content h2{color:#00ffff;font-size:24px;margin-bottom:20px;}
+.close{float:right;font-size:22px;cursor:pointer;color:#aaa;}
+.close:hover{color:red;}
+.form-group{margin-bottom:14px;}
+.form-group input,.form-group select{width:100%;padding:12px 15px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:white;font-size:14px;outline:none;transition:0.3s;}
+.form-group input:focus{border-color:#00ffff;}
+.form-group select option{background:#0b0f1a;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+footer{background:#060810;border-top:1px solid rgba(255,255,255,0.05);padding:30px 50px;text-align:center;color:#aaa;font-size:13px;}
+/* Search & Filter */
+.search-bar{display:flex;gap:12px;margin-bottom:30px;flex-wrap:wrap;}
+.search-bar input{flex:1;min-width:200px;padding:12px 18px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:white;font-size:14px;outline:none;transition:0.3s;}
+.search-bar input:focus{border-color:#00ffff;}
+.filter-tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:30px;}
+.filter-tab{padding:8px 18px;border-radius:20px;border:1px solid rgba(255,255,255,0.1);background:transparent;color:#aaa;font-size:13px;font-weight:600;cursor:pointer;transition:0.3s;}
+.filter-tab.active,.filter-tab:hover{background:rgba(0,255,255,0.1);border-color:#00ffff;color:#00ffff;}
+.course-card.hidden{display:none;}
+@media(max-width:768px){header{padding:15px 20px;}nav{display:none;}.page-hero{padding:100px 20px 60px;}.page-hero h1{font-size:36px;}section{padding:60px 20px;}}
+</style>
+</head>
+<body>
+<header>
+<a href="index.html" class="logo"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">TCF Institute</a>
+<nav>
+<a href="index.html">Home</a>
+<a href="courses.html" class="active">Courses</a>
+<a href="placements.html">Placements</a>
+<a href="mock-assessment.html">Mock Assessment</a>
+<a href="about.html">About</a>
+<a href="contact.html">Contact</a>
+<a href="auth.html">Login</a>
+<a href="apply.html" style="background:rgba(0,255,255,0.15);color:#00ffff;">Apply Now</a>
+<a href="dashboard.html" class="nav-btn">📊 Dashboard</a>
+</nav>
+</header>
+
+<div class="page-hero">
+<h1>Our Courses</h1>
+<p>Industry-focused training programs designed to make you job-ready with practical skills and 100% placement support</p>
+</div>
+
+<section>
+<!-- Search & Filter -->
+<div class="search-bar">
+  <input type="text" id="searchInput" placeholder="🔍 Search courses..." oninput="filterCourses()">
+</div>
+<div class="filter-tabs">
+  <button class="filter-tab active" onclick="setFilter('all',this)">All Courses</button>
+  <button class="filter-tab" onclick="setFilter('popular',this)">⭐ Popular</button>
+  <button class="filter-tab" onclick="setFilter('trending',this)">🔥 Trending</button>
+  <button class="filter-tab" onclick="setFilter('new',this)">🆕 New</button>
+  <button class="filter-tab" onclick="setFilter('cloud',this)">☁️ Cloud</button>
+</div>
+<div class="courses-grid" id="coursesGrid">
+
+<div class="course-card">
+<img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085">
+<div class="course-body">
+<span class="course-tag">⭐ Most Popular</span>
+<h3>Web Development</h3>
+<p>Master full-stack web development with hands-on projects and real-world experience from scratch to deployment.</p>
+<ul class="course-features">
+<li>HTML5, CSS3, JavaScript ES6+</li>
+<li>React.js & Node.js</li>
+<li>MySQL & MongoDB</li>
+<li>REST API Development</li>
+<li>Git & GitHub</li>
+<li>Live Projects & Placement</li>
+</ul>
+<div class="course-footer">
+<div><span class="course-price">₹5,000</span><br><span class="course-meta">⏱ 3 Months</span></div>
+<button class="btn btn-primary" onclick="location.href='apply.html?course=Web Development'">Apply Now</button>
+</div>
+</div>
+</div>
+
+<div class="course-card">
+<img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4">
+<div class="course-body">
+<span class="course-tag">🔥 High Demand</span>
+<h3>Software Testing</h3>
+<p>Become a certified QA engineer with manual and automation testing skills that top companies demand.</p>
+<ul class="course-features">
+<li>Manual Testing & SDLC</li>
+<li>Selenium WebDriver</li>
+<li>TestNG & JUnit Framework</li>
+<li>API Testing with Postman</li>
+<li>Bug Tracking with JIRA</li>
+<li>Certification & Placement</li>
+</ul>
+<div class="course-footer">
+<div><span class="course-price">₹4,500</span><br><span class="course-meta">⏱ 2.5 Months</span></div>
+<button class="btn btn-primary" onclick="location.href='apply.html?course=Software Testing'">Apply Now</button>
+</div>
+</div>
+</div>
+
+<div class="course-card">
+<img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71">
+<div class="course-body">
+<span class="course-tag">📈 Trending</span>
+<h3>Data Analytics</h3>
+<p>Learn to analyze data and make business decisions using modern tools and technologies.</p>
+<ul class="course-features">
+<li>Python & Pandas</li>
+<li>SQL & Database Management</li>
+<li>Power BI & Tableau</li>
+<li>Excel Advanced Analytics</li>
+<li>Machine Learning Basics</li>
+<li>Real Projects & Placement</li>
+</ul>
+<div class="course-footer">
+<div><span class="course-price">₹3,000</span><br><span class="course-meta">⏱ 2 Months</span></div>
+<button class="btn btn-primary" onclick="location.href='apply.html?course=Data Analytics'">Apply Now</button>
+</div>
+</div>
+</div>
+
+<div class="course-card">
+<img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d">
+<div class="course-body">
+<span class="course-tag">🆕 New Course</span>
+<h3>Python Programming</h3>
+<p>Learn Python from basics to advanced with automation, data science and real-world applications.</p>
+<ul class="course-features">
+<li>Python Basics to Advanced</li>
+<li>OOP Concepts</li>
+<li>File Handling & Modules</li>
+<li>Django Web Framework</li>
+<li>Automation Scripts</li>
+<li>Projects & Placement</li>
+</ul>
+<div class="course-footer">
+<div><span class="course-price">₹3,500</span><br><span class="course-meta">⏱ 2 Months</span></div>
+<button class="btn btn-primary" onclick="location.href='apply.html?course=Python Programming'">Apply Now</button>
+</div>
+</div>
+</div>
+
+<div class="course-card">
+<img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3">
+<div class="course-body">
+<span class="course-tag">💼 Job Ready</span>
+<h3>Java Full Stack</h3>
+<p>Master Core Java, Spring Boot and build enterprise-level applications for top MNC companies.</p>
+<ul class="course-features">
+<li>Core Java & OOP</li>
+<li>Spring Boot & Hibernate</li>
+<li>Microservices Architecture</li>
+<li>Angular Frontend</li>
+<li>MySQL & JPA</li>
+<li>Projects & Placement</li>
+</ul>
+<div class="course-footer">
+<div><span class="course-price">₹6,000</span><br><span class="course-meta">⏱ 4 Months</span></div>
+<button class="btn btn-primary" onclick="location.href='apply.html?course=Java Full Stack'">Apply Now</button>
+</div>
+</div>
+</div>
+
+<div class="course-card">
+<img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31">
+<div class="course-body">
+<span class="course-tag">☁️ Cloud Computing</span>
+<h3>AWS Cloud</h3>
+<p>Learn Amazon Web Services, cloud deployment and get AWS certified for high-paying cloud roles.</p>
+<ul class="course-features">
+<li>AWS Core Services</li>
+<li>EC2, S3, RDS, Lambda</li>
+<li>Cloud Security & IAM</li>
+<li>DevOps & CI/CD</li>
+<li>AWS Certification Prep</li>
+<li>Projects & Placement</li>
+</ul>
+<div class="course-footer">
+<div><span class="course-price">₹7,000</span><br><span class="course-meta">⏱ 3 Months</span></div>
+<button class="btn btn-primary" onclick="location.href='apply.html?course=AWS Cloud Computing'">Apply Now</button>
+</div>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- EMI CALCULATOR -->
+<section style="padding:40px 50px;background:rgba(0,255,255,0.02);">
+<div style="max-width:700px;margin:0 auto;background:rgba(255,255,255,0.03);border:1px solid rgba(0,255,255,0.15);border-radius:20px;padding:30px;">
+  <h2 style="color:#00ffff;font-size:20px;font-weight:800;margin-bottom:6px;">💰 EMI Calculator</h2>
+  <p style="color:#555;font-size:13px;margin-bottom:20px;">Calculate your monthly installment for any course!</p>
+  <div style="margin-bottom:14px;">
+    <label style="color:#aaa;font-size:12px;display:block;margin-bottom:6px;">Quick Select Course</label>
+    <select onchange="document.getElementById('emiFee').value=this.value;calcEMI()" style="width:100%;padding:10px 14px;background:#0b0f1a;border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:white;font-size:14px;outline:none;">
+      <option value="">-- Select a course --</option>
+      <option value="5000">Web Development — ₹5,000</option>
+      <option value="4500">Software Testing — ₹4,500</option>
+      <option value="3000">Data Analytics — ₹3,000</option>
+      <option value="3500">Python Programming — ₹3,500</option>
+      <option value="6000">Java Full Stack — ₹6,000</option>
+      <option value="7000">AWS Cloud — ₹7,000</option>
+    </select>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;">
+    <div>
+      <label style="color:#aaa;font-size:12px;display:block;margin-bottom:6px;">Course Fee (₹)</label>
+      <input id="emiFee" type="number" value="5000" oninput="calcEMI()" style="width:100%;padding:10px 14px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:white;font-size:14px;outline:none;">
+    </div>
+    <div>
+      <label style="color:#aaa;font-size:12px;display:block;margin-bottom:6px;">Months</label>
+      <select id="emiMonths" onchange="calcEMI()" style="width:100%;padding:10px 14px;background:#0b0f1a;border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:white;font-size:14px;outline:none;">
+        <option value="2">2 Months</option>
+        <option value="3">3 Months</option>
+        <option value="4">4 Months</option>
+        <option value="6" selected>6 Months</option>
+        <option value="12">12 Months</option>
+      </select>
+    </div>
+    <div style="display:flex;align-items:flex-end;">
+      <div style="background:linear-gradient(135deg,rgba(0,255,255,0.1),rgba(0,128,255,0.1));border:1px solid rgba(0,255,255,0.2);border-radius:8px;padding:10px 14px;width:100%;text-align:center;">
+        <p style="color:#555;font-size:11px;">Monthly EMI</p>
+        <p id="emiResult" style="color:#00ffff;font-size:20px;font-weight:800;">₹834</p>
+      </div>
+    </div>
+  </div>
+  <p style="color:#555;font-size:12px;">* 0% interest EMI available. Contact us to apply!</p>
+</div>
+</section>
+
+<!-- COURSE COMPARISON -->
+<section style="padding:40px 50px;">
+<h2 style="font-size:28px;font-weight:800;text-align:center;margin-bottom:8px;">Course Comparison</h2>
+<p style="color:#aaa;text-align:center;font-size:14px;margin-bottom:30px;">Compare all courses side by side</p>
+<div style="overflow-x:auto;">
+<table style="width:100%;border-collapse:collapse;min-width:700px;">
+  <thead>
+    <tr style="background:rgba(0,255,255,0.06);">
+      <th style="padding:14px 16px;text-align:left;color:#00ffff;font-size:13px;">Feature</th>
+      <th style="padding:14px 16px;text-align:center;color:#aaa;font-size:12px;">Web Dev</th>
+      <th style="padding:14px 16px;text-align:center;color:#aaa;font-size:12px;">Testing</th>
+      <th style="padding:14px 16px;text-align:center;color:#aaa;font-size:12px;">Data Analytics</th>
+      <th style="padding:14px 16px;text-align:center;color:#aaa;font-size:12px;">Python</th>
+      <th style="padding:14px 16px;text-align:center;color:#aaa;font-size:12px;">Java</th>
+      <th style="padding:14px 16px;text-align:center;color:#aaa;font-size:12px;">AWS</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td style="padding:12px 16px;color:#ccc;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.04);">Price</td><td style="text-align:center;color:#00ffff;font-weight:700;border-bottom:1px solid rgba(255,255,255,0.04);">₹5K</td><td style="text-align:center;color:#00ffff;font-weight:700;border-bottom:1px solid rgba(255,255,255,0.04);">₹4.5K</td><td style="text-align:center;color:#00ffff;font-weight:700;border-bottom:1px solid rgba(255,255,255,0.04);">₹3K</td><td style="text-align:center;color:#00ffff;font-weight:700;border-bottom:1px solid rgba(255,255,255,0.04);">₹3.5K</td><td style="text-align:center;color:#00ffff;font-weight:700;border-bottom:1px solid rgba(255,255,255,0.04);">₹6K</td><td style="text-align:center;color:#00ffff;font-weight:700;border-bottom:1px solid rgba(255,255,255,0.04);">₹7K</td></tr>
+    <tr><td style="padding:12px 16px;color:#ccc;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.04);">Duration</td><td style="text-align:center;color:#aaa;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.04);">3 mo</td><td style="text-align:center;color:#aaa;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.04);">2.5 mo</td><td style="text-align:center;color:#aaa;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.04);">2 mo</td><td style="text-align:center;color:#aaa;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.04);">2 mo</td><td style="text-align:center;color:#aaa;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.04);">4 mo</td><td style="text-align:center;color:#aaa;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.04);">3 mo</td></tr>
+    <tr><td style="padding:12px 16px;color:#ccc;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.04);">Placement</td><td style="text-align:center;border-bottom:1px solid rgba(255,255,255,0.04);">✅</td><td style="text-align:center;border-bottom:1px solid rgba(255,255,255,0.04);">✅</td><td style="text-align:center;border-bottom:1px solid rgba(255,255,255,0.04);">✅</td><td style="text-align:center;border-bottom:1px solid rgba(255,255,255,0.04);">✅</td><td style="text-align:center;border-bottom:1px solid rgba(255,255,255,0.04);">✅</td><td style="text-align:center;border-bottom:1px solid rgba(255,255,255,0.04);">✅</td></tr>
+    <tr><td style="padding:12px 16px;color:#ccc;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.04);">Certificate</td><td style="text-align:center;border-bottom:1px solid rgba(255,255,255,0.04);">✅</td><td style="text-align:center;border-bottom:1px solid rgba(255,255,255,0.04);">✅</td><td style="text-align:center;border-bottom:1px solid rgba(255,255,255,0.04);">✅</td><td style="text-align:center;border-bottom:1px solid rgba(255,255,255,0.04);">✅</td><td style="text-align:center;border-bottom:1px solid rgba(255,255,255,0.04);">✅</td><td style="text-align:center;border-bottom:1px solid rgba(255,255,255,0.04);">✅</td></tr>
+    <tr><td style="padding:12px 16px;color:#ccc;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.04);">Avg Salary</td><td style="text-align:center;color:#4caf50;font-size:12px;font-weight:700;border-bottom:1px solid rgba(255,255,255,0.04);">₹4.5L</td><td style="text-align:center;color:#4caf50;font-size:12px;font-weight:700;border-bottom:1px solid rgba(255,255,255,0.04);">₹4L</td><td style="text-align:center;color:#4caf50;font-size:12px;font-weight:700;border-bottom:1px solid rgba(255,255,255,0.04);">₹4.2L</td><td style="text-align:center;color:#4caf50;font-size:12px;font-weight:700;border-bottom:1px solid rgba(255,255,255,0.04);">₹4L</td><td style="text-align:center;color:#4caf50;font-size:12px;font-weight:700;border-bottom:1px solid rgba(255,255,255,0.04);">₹5L</td><td style="text-align:center;color:#4caf50;font-size:12px;font-weight:700;border-bottom:1px solid rgba(255,255,255,0.04);">₹6L</td></tr>
+    <tr><td style="padding:12px 16px;color:#ccc;font-size:13px;">Difficulty</td><td style="text-align:center;color:#ff9800;font-size:12px;">Medium</td><td style="text-align:center;color:#4caf50;font-size:12px;">Easy</td><td style="text-align:center;color:#4caf50;font-size:12px;">Easy</td><td style="text-align:center;color:#4caf50;font-size:12px;">Easy</td><td style="text-align:center;color:#f44336;font-size:12px;">Hard</td><td style="text-align:center;color:#ff9800;font-size:12px;">Medium</td></tr>
+  </tbody>
+</table>
+</div>
+</section>
+
+<footer><p>© 2026 TCF Institute. All rights reserved.</p></footer>
+<script src="chatbot.js"></script>
+<script>
+let activeFilter='all';
+function setFilter(f,el){
+  activeFilter=f;
+  document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  filterCourses();
+}
+function filterCourses(){
+  const q=document.getElementById('searchInput').value.toLowerCase();
+  document.querySelectorAll('#coursesGrid .course-card').forEach(card=>{
+    const text=card.innerText.toLowerCase();
+    const tag=card.querySelector('.course-tag').innerText.toLowerCase();
+    const matchSearch=!q||text.includes(q);
+    const matchFilter=activeFilter==='all'||
+      (activeFilter==='popular'&&tag.includes('popular'))||
+      (activeFilter==='trending'&&(tag.includes('trending')||tag.includes('demand')))||
+      (activeFilter==='new'&&tag.includes('new'))||
+      (activeFilter==='cloud'&&tag.includes('cloud'));
+    card.classList.toggle('hidden',!(matchSearch&&matchFilter));
+  });
+}
+function calcEMI(){
+  const fee=parseFloat(document.getElementById('emiFee').value)||0;
+  const months=parseInt(document.getElementById('emiMonths').value)||6;
+  const emi=fee>0?Math.ceil(fee/months):0;
+  document.getElementById('emiResult').innerText=fee>0?'₹'+emi.toLocaleString():'₹0';
+}
+calcEMI();
+</script>
+<script src="global.js"></script>
+<script src="enhancements.js"></script>
+</html>

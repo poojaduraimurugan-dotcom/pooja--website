@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCF Institute - Blog & News</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif;}
+body{background:#0b0f1a;color:white;overflow-x:hidden;}
+header{position:fixed;top:0;width:100%;padding:15px 50px;display:flex;justify-content:space-between;align-items:center;background:rgba(11,15,26,0.97);backdrop-filter:blur(10px);z-index:1000;border-bottom:1px solid rgba(0,255,255,0.1);}
+.logo{display:flex;align-items:center;gap:12px;font-size:24px;font-weight:bold;color:#00ffff;text-decoration:none;}
+.logo img{width:42px;height:42px;border-radius:50%;}
+nav{display:flex;gap:5px;align-items:center;}
+nav a{color:#ccc;text-decoration:none;padding:8px 14px;border-radius:8px;transition:0.3s;font-size:14px;}
+nav a:hover{color:#00ffff;background:rgba(0,255,255,0.1);}
+.nav-btn{background:#00ffff!important;color:#0b0f1a!important;font-weight:bold!important;}
+.page-hero{padding:140px 50px 80px;text-align:center;background:linear-gradient(rgba(11,15,26,0.85),rgba(11,15,26,1)),url('https://images.unsplash.com/photo-1499750310107-5fef28a66643');background-size:cover;}
+.page-hero h1{font-size:50px;font-weight:800;background:linear-gradient(135deg,#fff,#00ffff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:15px;}
+.page-hero p{color:#aaa;font-size:17px;}
+section{padding:80px 50px;}
+.blog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:28px;}
+.blog-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:18px;overflow:hidden;transition:0.4s;cursor:pointer;}
+.blog-card:hover{transform:translateY(-6px);border-color:rgba(0,255,255,0.3);box-shadow:0 20px 40px rgba(0,255,255,0.08);}
+.blog-card img{width:100%;height:200px;object-fit:cover;}
+.blog-body{padding:22px;}
+.blog-tag{background:rgba(0,255,255,0.1);color:#00ffff;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;display:inline-block;margin-bottom:12px;}
+.blog-body h3{font-size:18px;font-weight:700;margin-bottom:10px;line-height:1.4;}
+.blog-body p{color:#aaa;font-size:13px;line-height:1.7;margin-bottom:16px;}
+.blog-meta{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#555;}
+.blog-meta span{color:#00ffff;}
+footer{background:#060810;border-top:1px solid rgba(255,255,255,0.05);padding:30px 50px;text-align:center;color:#aaa;font-size:13px;}
+@media(max-width:768px){header{padding:15px 20px;}nav{display:none;}section{padding:60px 20px;}.page-hero h1{font-size:36px;}}
+</style>
+</head>
+<body>
+<header>
+<a href="index.html" class="logo"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">TCF Institute</a>
+<nav>
+<a href="index.html">Home</a><a href="courses.html">Courses</a><a href="placements.html">Placements</a>
+<a href="about.html">About</a><a href="contact.html">Contact</a><a href="auth.html">Login</a>
+<a href="dashboard.html" class="nav-btn">📊 Dashboard</a>
+</nav>
+</header>
+<div class="page-hero"><h1>Blog & News</h1><p>IT career tips, industry news and student success stories</p></div>
+<section>
+<div class="blog-grid">
+<div class="blog-card"><img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085"><div class="blog-body"><span class="blog-tag">💡 Career Tips</span><h3>Top 10 Skills Every Web Developer Needs in 2026</h3><p>The tech industry is evolving fast. Here are the must-have skills that will make you stand out in web development interviews...</p><div class="blog-meta"><span>📅 May 10, 2026</span><span>5 min read</span></div></div></div>
+<div class="blog-card"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71"><div class="blog-body"><span class="blog-tag">📊 Industry News</span><h3>Why Data Analytics is the Hottest Career in 2026</h3><p>Companies are generating more data than ever. Data analysts are in massive demand with salaries going up to ₹8 LPA for freshers...</p><div class="blog-meta"><span>📅 May 8, 2026</span><span>4 min read</span></div></div></div>
+<div class="blog-card"><img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4"><div class="blog-body"><span class="blog-tag">🎓 Student Story</span><h3>How Priya Got Placed at TCS in Just 2 Months</h3><p>Priya joined TCF Institute with zero coding knowledge. After completing Web Development course, she cracked TCS interview in her first attempt...</p><div class="blog-meta"><span>📅 May 5, 2026</span><span>3 min read</span></div></div></div>
+<div class="blog-card"><img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31"><div class="blog-body"><span class="blog-tag">☁️ AWS</span><h3>AWS vs Azure vs GCP: Which Cloud to Learn in 2026?</h3><p>Cloud computing is booming. But which platform should you focus on? We break down the pros and cons of each major cloud provider...</p><div class="blog-meta"><span>📅 May 3, 2026</span><span>6 min read</span></div></div></div>
+<div class="blog-card"><img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d"><div class="blog-body"><span class="blog-tag">🐍 Python</span><h3>Python for Beginners: Complete Roadmap 2026</h3><p>Python is the most popular programming language. Here's a complete step-by-step roadmap to go from zero to job-ready in Python...</p><div class="blog-meta"><span>📅 Apr 28, 2026</span><span>7 min read</span></div></div></div>
+<div class="blog-card"><img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3"><div class="blog-body"><span class="blog-tag">☕ Java</span><h3>Spring Boot Interview Questions Asked at TCS, Infosys</h3><p>Preparing for Java Full Stack interviews? Here are the top 20 Spring Boot questions that are commonly asked at top MNC companies...</p><div class="blog-meta"><span>📅 Apr 25, 2026</span><span>8 min read</span></div></div></div>
+</div>
+</section>
+<footer><p>© 2026 TCF Institute. All rights reserved.</p></footer>
+<script src="chatbot.js"></script>
+</body>
+</html>

@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCF Institute - Admin Dashboard</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif;}
+body{background:#0b0f1a;color:white;display:flex;}
+.sidebar{position:fixed;left:0;top:0;width:250px;height:100vh;background:#111827;padding:20px 15px;overflow-y:auto;z-index:100;border-right:1px solid rgba(255,100,0,0.15);}
+.logo{display:flex;align-items:center;gap:10px;margin-bottom:8px;padding:12px;border-bottom:1px solid rgba(255,255,255,0.06);}
+.logo img{width:38px;height:38px;border-radius:10px;}
+.logo-text h2{color:#ff6400;font-size:16px;font-weight:800;}
+.logo-text p{color:#4b5563;font-size:10px;letter-spacing:1px;text-transform:uppercase;}
+.sidebar-label{color:#374151;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:14px 18px 6px;}
+.menu-item{display:flex;align-items:center;gap:12px;padding:12px 18px;margin:3px 0;border-radius:12px;color:#6b7280;cursor:pointer;transition:all 0.25s;border:none;background:none;width:100%;text-align:left;font-size:13.5px;font-weight:500;}
+.menu-item:hover{background:rgba(255,100,0,0.06);color:#e2e8f0;}
+.menu-item.active{background:linear-gradient(135deg,rgba(255,100,0,0.15),rgba(255,50,0,0.1));color:#ff6400;border-left:3px solid #ff6400;font-weight:700;}
+.menu-item .icon{font-size:18px;width:22px;}
+.main{margin-left:250px;width:calc(100% - 250px);padding:28px;min-height:100vh;}
+.header{background:#111827;padding:18px 25px;border-radius:16px;margin-bottom:25px;display:flex;justify-content:space-between;align-items:center;border:1px solid rgba(255,100,0,0.1);}
+.header h1{color:#ff6400;font-size:20px;font-weight:700;}
+.header p{color:#4b5563;font-size:13px;}
+.header-right{display:flex;align-items:center;gap:12px;}
+.logout-btn{padding:8px 16px;background:rgba(244,67,54,0.08);color:#f44336;border:1px solid rgba(244,67,54,0.2);border-radius:10px;font-weight:700;cursor:pointer;font-size:13px;}
+.logout-btn:hover{background:rgba(244,67,54,0.9);color:white;}
+.section{display:none;}
+.section.active{display:block;}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px;margin-bottom:25px;}
+.stat-card{background:#111827;padding:22px;border-radius:16px;border:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:15px;transition:0.3s;position:relative;overflow:hidden;}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#ff6400,#ff3200);opacity:0;transition:0.3s;}
+.stat-card:hover{border-color:rgba(255,100,0,0.25);transform:translateY(-3px);}
+.stat-card:hover::before{opacity:1;}
+.stat-icon{font-size:32px;width:52px;height:52px;background:rgba(255,100,0,0.08);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.stat-info h3{color:#4b5563;font-size:11px;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.8px;}
+.stat-info p{color:#ff6400;font-size:24px;font-weight:800;}
+.card{background:#111827;padding:24px;border-radius:16px;border:1px solid rgba(255,255,255,0.06);margin-bottom:22px;}
+.card h2{color:#f1f5f9;font-size:16px;font-weight:700;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:8px;}
+table{width:100%;border-collapse:collapse;}
+th{background:rgba(255,100,0,0.05);color:#6b7280;padding:12px 15px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;}
+td{padding:14px 15px;border-bottom:1px solid rgba(255,255,255,0.04);color:#d1d5db;font-size:13px;}
+tr:hover td{background:rgba(255,255,255,0.02);}
+.status-badge{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;display:inline-block;}
+.status-badge.pending{background:rgba(255,152,0,0.15);color:#ff9800;}
+.status-badge.approved{background:rgba(76,175,80,0.15);color:#4caf50;}
+.status-badge.rejected{background:rgba(244,67,54,0.15);color:#f44336;}
+.btn-approve{padding:5px 12px;background:rgba(76,175,80,0.15);color:#4caf50;border:1px solid rgba(76,175,80,0.3);border-radius:6px;cursor:pointer;font-size:12px;font-weight:700;}
+.btn-approve:hover{background:#4caf50;color:white;}
+.btn-reject{padding:5px 12px;background:rgba(244,67,54,0.15);color:#f44336;border:1px solid rgba(244,67,54,0.3);border-radius:6px;cursor:pointer;font-size:12px;font-weight:700;}
+.btn-reject:hover{background:#f44336;color:white;}
+.toast-container{position:fixed;top:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;}
+.toast{padding:14px 20px;border-radius:14px;font-size:14px;font-weight:600;color:white;display:flex;align-items:center;gap:10px;box-shadow:0 8px 30px rgba(0,0,0,0.4);animation:slideIn 0.4s ease;min-width:280px;}
+@keyframes slideIn{from{transform:translateX(120%);opacity:0;}to{transform:translateX(0);opacity:1;}}
+.toast.success{background:linear-gradient(135deg,#4caf50,#2e7d32);}
+.toast.error{background:linear-gradient(135deg,#f44336,#c62828);}
+.search-bar{width:100%;padding:10px 16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:white;font-size:14px;outline:none;margin-bottom:16px;}
+.search-bar:focus{border-color:#ff6400;}
+.add-btn{padding:10px 20px;background:linear-gradient(135deg,#ff6400,#ff3200);color:white;border:none;border-radius:10px;font-weight:700;cursor:pointer;font-size:13px;margin-bottom:16px;}
+.add-btn:hover{opacity:0.85;}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="logo">
+    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+    <div class="logo-text">
+      <h2>TCF Admin</h2>
+      <p>Admin Portal</p>
+    </div>
+  </div>
+
+  <div class="sidebar-label">Management</div>
+  <button class="menu-item active" onclick="show('overview',this)"><span class="icon">🏠</span><span>Overview</span></button>
+  <button class="menu-item" onclick="show('allUsers',this)"><span class="icon">👥</span><span>All Students</span></button>
+  <button class="menu-item" onclick="show('allApplications',this)"><span class="icon">📝</span><span>Applications</span></button>
+  <button class="menu-item" onclick="show('allCourses',this)"><span class="icon">📚</span><span>Courses</span></button>
+  <button class="menu-item" onclick="show('allPlacements',this)"><span class="icon">🏢</span><span>Placements</span></button>
+  <button class="menu-item" onclick="show('studentProgress',this)"><span class="icon">📊</span><span>Student Progress</span></button>
+  <button class="menu-item" onclick="show('quizResults',this)"><span class="icon">🧠</span><span>Quiz Results</span></button>
+  <button class="menu-item" onclick="show('interviewResults',this)"><span class="icon">🎙️</span><span>Interview Results</span></button>
+  <button class="menu-item" onclick="show('mockTestResults',this)"><span class="icon">📝</span><span>Mock Tests</span></button>
+
+  <div class="sidebar-label">Tools</div>
+  <button class="menu-item" onclick="location.href='admin-chat.html'"><span class="icon">🎧</span><span>Live Chat</span></button>
+  <button class="menu-item" onclick="location.href='dashboard.html'"><span class="icon">🎓</span><span>Student View</span></button>
+  <button class="menu-item" onclick="location.href='index.html'"><span class="icon">🌐</span><span>Website</span></button>
+  <button class="menu-item" onclick="logout()" style="color:#f44336;margin-top:10px;"><span class="icon">🚪</span><span>Logout</span></button>
+</div>
+
+<div class="main">
+  <div class="header">
+    <div>
+      <h1>⚙️ Admin Dashboard</h1>
+      <p id="adminDate"></p>
+    </div>
+    <div class="header-right">
+      <span style="color:#ff6400;font-weight:700;font-size:14px;">👑 Admin Panel</span>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div id="overview" class="section active">
+    <div class="stats-grid">
+      <div class="stat-card"><span class="stat-icon">👥</span><div class="stat-info"><h3>Total Students</h3><p id="totalStudents">0</p></div></div>
+      <div class="stat-card"><span class="stat-icon">📝</span><div class="stat-info"><h3>Applications</h3><p id="totalApps">0</p></div></div>
+      <div class="stat-card"><span class="stat-icon">⏳</span><div class="stat-info"><h3>Pending</h3><p id="pendingApps">0</p></div></div>
+      <div class="stat-card"><span class="stat-icon">✅</span><div class="stat-info"><h3>Approved</h3><p id="approvedApps">0</p></div></div>
+      <div class="stat-card"><span class="stat-icon">📚</span><div class="stat-info"><h3>Courses</h3><p id="totalCoursesAdmin">0</p></div></div>
+      <div class="stat-card"><span class="stat-icon">🏢</span><div class="stat-info"><h3>Placements</h3><p id="totalPlacementsAdmin">0</p></div></div>
+      <div class="stat-card"><span class="stat-icon">🎙️</span><div class="stat-info"><h3>AI Interviews</h3><p id="totalInterviews">0</p></div></div>
+    </div>
+
+    <div class="card">
+      <h2>⏳ Pending Applications — Approve or Reject</h2>
+      <table>
+        <thead><tr><th>Student</th><th>Email</th><th>Course</th><th>Qualification</th><th>Date</th><th>Action</th></tr></thead>
+        <tbody id="pendingBody"></tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>📊 Recent Activity</h2>
+      <table>
+        <thead><tr><th>Student</th><th>Course</th><th>Status</th><th>Date</th></tr></thead>
+        <tbody id="recentBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ALL STUDENTS -->
+  <div id="allUsers" class="section">
+    <div class="card">
+      <h2>👥 All Students</h2>
+      <input class="search-bar" placeholder="🔍 Search students..." oninput="filterTable('usersBody',this.value)">
+      <table>
+        <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Joined</th></tr></thead>
+        <tbody id="usersBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ALL APPLICATIONS -->
+  <div id="allApplications" class="section">
+    <div class="card">
+      <h2>📝 All Applications</h2>
+      <input class="search-bar" placeholder="🔍 Search applications..." oninput="filterTable('appsBody',this.value)">
+      <table>
+        <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Course</th><th>Qualification</th><th>Status</th><th>Date</th><th>Action</th></tr></thead>
+        <tbody id="appsBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ALL COURSES -->
+  <div id="allCourses" class="section">
+    <div class="card">
+      <h2>📚 All Courses</h2>
+      <table>
+        <thead><tr><th>ID</th><th>Course Name</th><th>Price</th><th>Description</th></tr></thead>
+        <tbody id="coursesBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ALL PLACEMENTS -->
+  <div id="allPlacements" class="section">
+    <div class="card">
+      <h2>🏢 All Placements</h2>
+      <table>
+        <thead><tr><th>ID</th><th>Student Name</th><th>Company</th><th>Role</th><th>Date</th></tr></thead>
+        <tbody id="placementsBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- STUDENT PROGRESS -->
+  <div id="studentProgress" class="section">
+    <div class="card">
+      <h2>📊 Student Course Progress</h2>
+      <input class="search-bar" placeholder="🔍 Search by student name..." oninput="filterTable('progressBody',this.value)">
+      <table>
+        <thead><tr><th>Student</th><th>Course</th><th>Progress</th><th>Status</th></tr></thead>
+        <tbody id="progressBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- QUIZ RESULTS -->
+  <div id="quizResults" class="section">
+    <div class="card">
+      <h2>🧠 Quiz Results</h2>
+      <table>
+        <thead><tr><th>Student</th><th>Course</th><th>Score</th><th>Total</th><th>Result</th><th>Date</th></tr></thead>
+        <tbody id="quizBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- MOCK TEST RESULTS -->
+  <div id="mockTestResults" class="section">
+    <div class="card">
+      <h2>📝 Mock Test Results</h2>
+      <table>
+        <thead><tr><th>Student</th><th>Test Name</th><th>Score</th><th>Status</th><th>Date</th></tr></thead>
+        <tbody id="mockTestBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- INTERVIEW RESULTS -->
+  <div id="interviewResults" class="section">
+    <div class="card">
+      <h2>🎙️ AI Mock Interview Performance Reports</h2>
+      <table>
+        <thead><tr><th>Student</th><th>Role</th><th>Score</th><th>Confidence</th><th>Status</th><th>Date</th><th>Action</th></tr></thead>
+        <tbody id="interviewBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+</div>
+
+<script>
+const API = 'http://localhost:8000/api';
+document.getElementById('adminDate').innerText = new Date().toDateString();
+
+function showToast(msg, type='success'){
+  const tc = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.innerHTML = (type==='success'?'✅ ':'❌ ') + msg;
+  tc.appendChild(t);
+  setTimeout(()=>t.remove(), 3500);
+}
+
+function show(name, el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.menu-item').forEach(m=>m.classList.remove('active'));
+  document.getElementById(name).classList.add('active');
+  el.classList.add('active');
+}
+
+function filterTable(tbodyId, query){
+  const rows = document.getElementById(tbodyId).querySelectorAll('tr');
+  rows.forEach(r=>{
+    r.style.display = r.innerText.toLowerCase().includes(query.toLowerCase()) ? '' : 'none';
+  });
+}
+
+async function updateStatus(appId, status){
+  const res = await fetch(`${API}/applications/update-status`, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({id: appId, status})
+  }).then(r=>r.json()).catch(()=>({success:false}));
+  if(res.success || true){ // reload regardless
+    showToast(`Application ${status}!`);
+    setTimeout(()=>loadAll(), 800);
+  }
+}
+
+async function loadAll(){
+  try{
+    // Users
+    const u = await fetch(`${API}/users`).then(r=>r.json());
+    if(u.success){
+      document.getElementById('totalStudents').innerText = u.data.length;
+      document.getElementById('usersBody').innerHTML = u.data.map(u=>`
+        <tr><td>${u.id}</td><td><b>${u.full_name}</b></td><td>${u.email}</td><td>${u.phone||'-'}</td><td>${new Date(u.created_at).toLocaleDateString()}</td></tr>
+      `).join('');
+    }
+
+    // Applications
+    const a = await fetch(`${API}/applications`).then(r=>r.json());
+    if(a.success){
+      const pending = a.data.filter(x=>x.status==='Pending');
+      const approved = a.data.filter(x=>x.status==='Approved');
+      document.getElementById('totalApps').innerText = a.data.length;
+      document.getElementById('pendingApps').innerText = pending.length;
+      document.getElementById('approvedApps').innerText = approved.length;
+
+      // Pending applications for quick approve/reject
+      document.getElementById('pendingBody').innerHTML = pending.length > 0
+        ? pending.map(a=>`
+          <tr>
+            <td><b>${a.full_name}</b></td>
+            <td>${a.email}</td>
+            <td><span style="color:#00ffff;">${a.course_name}</span></td>
+            <td>${a.qualification}</td>
+            <td>${new Date(a.applied_at).toLocaleDateString()}</td>
+            <td style="display:flex;gap:6px;">
+              <button class="btn-approve" onclick="updateStatus(${a.id},'Approved')">✅ Approve</button>
+              <button class="btn-reject" onclick="updateStatus(${a.id},'Rejected')">❌ Reject</button>
+            </td>
+          </tr>`).join('')
+        : '<tr><td colspan="6" style="text-align:center;color:#555;padding:20px;">No pending applications</td></tr>';
+
+      // Recent activity
+      document.getElementById('recentBody').innerHTML = a.data.slice(0,10).map(a=>`
+        <tr><td>${a.full_name}</td><td>${a.course_name}</td><td><span class="status-badge ${a.status.toLowerCase()}">${a.status}</span></td><td>${new Date(a.applied_at).toLocaleDateString()}</td></tr>
+      `).join('');
+
+      // All applications
+      document.getElementById('appsBody').innerHTML = a.data.map(a=>`
+        <tr>
+          <td>${a.id}</td><td>${a.full_name}</td><td>${a.email}</td>
+          <td>${a.course_name}</td><td>${a.qualification}</td>
+          <td><span class="status-badge ${a.status.toLowerCase()}">${a.status}</span></td>
+          <td>${new Date(a.applied_at).toLocaleDateString()}</td>
+          <td style="display:flex;gap:6px;">
+            ${a.status==='Pending'?`<button class="btn-approve" onclick="updateStatus(${a.id},'Approved')">✅</button><button class="btn-reject" onclick="updateStatus(${a.id},'Rejected')">❌</button>`:'<span style="color:#555;font-size:12px;">Done</span>'}
+          </td>
+        </tr>`).join('');
+    }
+
+    // Courses
+    const c = await fetch(`${API}/courses`).then(r=>r.json());
+    if(c.success){
+      document.getElementById('totalCoursesAdmin').innerText = c.data.length;
+      document.getElementById('coursesBody').innerHTML = c.data.map(c=>`
+        <tr><td>${c.id}</td><td><b>${c.course_name}</b></td><td style="color:#ff6400;">₹${c.price}</td><td>${c.description}</td></tr>
+      `).join('');
+    }
+
+    // Placements
+    const p = await fetch(`${API}/placements`).then(r=>r.json());
+    if(p.success){
+      document.getElementById('totalPlacementsAdmin').innerText = p.data.length;
+      document.getElementById('placementsBody').innerHTML = p.data.map(p=>`
+        <tr><td>${p.id}</td><td>${p.student_name}</td><td>${p.company_name}</td><td>${p.role}</td><td>${p.placed_at}</td></tr>
+      `).join('');
+    }
+
+    // Student Progress — fetch all users and their progress
+    if(u.success){
+      let progressRows = '';
+      for(const student of u.data.slice(0,20)){
+        const prog = await fetch(`${API}/learning/progress/${student.id}`).then(r=>r.json()).catch(()=>({success:false,data:[]}));
+        if(prog.success && prog.data.length > 0){
+          prog.data.forEach(p=>{
+            const bar = `<div style="background:rgba(255,255,255,0.05);border-radius:10px;height:8px;overflow:hidden;width:120px;display:inline-block;vertical-align:middle;margin-right:8px;"><div style="background:linear-gradient(90deg,#00ffff,#0080ff);height:8px;width:${p.progress}%;border-radius:10px;"></div></div>${p.progress}%`;
+            progressRows += `<tr><td><b>${student.full_name}</b></td><td>${p.course_name}</td><td>${bar}</td><td><span class="status-badge ${p.completed?'approved':'pending'}">${p.completed?'✅ Completed':'⏳ In Progress'}</span></td></tr>`;
+          });
+        }
+      }
+      document.getElementById('progressBody').innerHTML = progressRows || '<tr><td colspan="4" style="text-align:center;color:#555;padding:20px;">No progress data yet</td></tr>';
+    }
+
+    // Quiz Results
+    const qRes = await fetch(`${API}/learning/quiz/results/all`).then(r=>r.json()).catch(()=>({success:false,data:[]}));
+    if(qRes.success && qRes.data){
+      document.getElementById('quizBody').innerHTML = qRes.data.map(q=>`
+        <tr>
+          <td>${q.full_name||q.user_id}</td>
+          <td>${q.course_name}</td>
+          <td style="color:#00ffff;font-weight:700;">${q.score}</td>
+          <td>${q.total}</td>
+          <td><span class="status-badge ${q.passed?'approved':'rejected'}">${q.passed?'✅ PASS':'❌ FAIL'}</span></td>
+          <td>${new Date(q.taken_at).toLocaleDateString()}</td>
+        </tr>`).join('');
+    } else {
+      document.getElementById('quizBody').innerHTML = '<tr><td colspan="6" style="text-align:center;color:#555;padding:20px;">No quiz results yet</td></tr>';
+    }
+
+    // Mock Test Results
+    const mtRes = await fetch(`${API}/mocktests/all-results`).then(r=>r.json()).catch(()=>({success:false,data:[]}));
+    if(mtRes.success && mtRes.data){
+      document.getElementById('mockTestBody').innerHTML = mtRes.data.map(mt=>`
+        <tr>
+          <td>${mt.student_name || mt.user_id}</td>
+          <td>${mt.test_name}</td>
+          <td style="color:#00ffff;font-weight:700;">${mt.score}</td>
+          <td><span class="status-badge ${mt.status.toLowerCase()}">${mt.status}</span></td>
+          <td>${mt.test_date}</td>
+        </tr>`).join('');
+    } else {
+      document.getElementById('mockTestBody').innerHTML = '<tr><td colspan="5" style="text-align:center;color:#555;padding:20px;">No mock test results yet</td></tr>';
+    }
+
+    // Interview Results
+    const iRes = await fetch(`${API}/interview/all-results`).then(r=>r.json()).catch(()=>({success:false,data:[]}));
+    if(iRes.success && iRes.data){
+      document.getElementById('interviewBody').innerHTML = iRes.data.map(i=>`
+        <tr>
+          <td><b>${i.user_name || i.user_id}</b></td>
+          <td>${i.role}</td>
+          <td style="color:#00ffff;font-weight:700;">${i.score}/10</td>
+          <td><span style="color: ${i.report_summary?.confidence_level === 'High' ? '#4caf50' : '#ff9800'}">${i.report_summary?.confidence_level || 'Medium'}</span></td>
+          <td><span class="status-badge ${i.status === 'passed' ? 'approved':'pending'}">${i.status.toUpperCase()}</span></td>
+          <td>${new Date(i.created_at).toLocaleDateString()}</td>
+          <td><button class="btn-approve" onclick="viewStudentReport(${JSON.stringify(i).replace(/"/g, '&quot;')})">View Report</button></td>
+        </tr>`).join('');
+    } else {
+      document.getElementById('interviewBody').innerHTML = '<tr><td colspan="6" style="text-align:center;color:#555;padding:20px;">No interview results yet</td></tr>';
+    }
+  }catch(e){ console.error(e); }
+}
+
+function viewStudentReport(reportData) {
+    // Save to localStorage so interview-report.html can render it
+    localStorage.setItem('lastReport', JSON.stringify(reportData.report_summary));
+    window.open('interview-report.html', '_blank');
+}
+
+function logout(){
+  localStorage.clear();
+  location.href='auth.html';
+}
+
+loadAll();
+</script>
+</body>
+</html>
